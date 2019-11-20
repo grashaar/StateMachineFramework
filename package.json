@@ -1,0 +1,18 @@
+{
+  "name": "com.grashaar.state-machine-framework",
+  "displayName": "State Machine Framework",
+  "version": "0.0.1",
+  "unity": "2019.1",
+  "license": "MIT",
+  "description": "Based on qua11q7/QuaStateMachine and ashblue/fluid-state-machine",
+  "keywords": [
+    "state machine",
+    "unity"
+  ],
+  "category": "Unity",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grashaar/StateMachineFramework.git"
+  },
+  "author": "Grashaar <grashaar@outlook.com> (https://github.com/grashaar)"
+}
