@@ -63,29 +63,6 @@ namespace StateMachineFramework
             SetTransition(startState, endState);
         }
 
-        public bool SetTransition(State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState)
-        {
-            if (this.StartStateI == null && this.EndStateI == null)
-            {
-                this.StartStateI = startState;
-                this.EndStateI = endState;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool AddSignal(Signal<TState, TTransition, TSignal> signal)
-        {
-            if (this.SignalsI.Exists(ts => ts.Name.Equals(signal.Name)))
-            {
-                return false;
-            }
-
-            this.SignalsI.Add(signal);
-            return true;
-        }
-
         public override bool AddAction(ITransitionAction action)
         {
             if (action == null || this.actions.Contains(action))
@@ -107,6 +84,29 @@ namespace StateMachineFramework
             }
 
             this.actions.Add(action);
+            return true;
+        }
+
+        internal bool SetTransition(State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState)
+        {
+            if (this.StartStateI == null && this.EndStateI == null)
+            {
+                this.StartStateI = startState;
+                this.EndStateI = endState;
+                return true;
+            }
+
+            return false;
+        }
+
+        internal bool AddSignal(Signal<TState, TTransition, TSignal> signal)
+        {
+            if (this.SignalsI.Exists(ts => ts.Name.Equals(signal.Name)))
+            {
+                return false;
+            }
+
+            this.SignalsI.Add(signal);
             return true;
         }
 

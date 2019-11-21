@@ -226,7 +226,6 @@ namespace StateMachineFramework
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
             Action<Signal<TState, TTransition, TSignal>> callback)
         {
-
             ConnectSignal(signalName, transition, out Signal<TState, TTransition, TSignal> signal);
             callback?.Invoke(signal);
 
@@ -271,35 +270,35 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> StartAt(
+        public StateMachine<TState, TTransition, TSignal> Initial(
             TState stateName)
         {
             SetInitialState(stateName);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> StartAt(
+        public StateMachine<TState, TTransition, TSignal> Initial(
             State<TState, TTransition, TSignal> state)
         {
             SetInitialState(state);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> StartAt(
+        public StateMachine<TState, TTransition, TSignal> Initial(
             TState innerStateName, TState stateName, int orthogonalIndex = 0)
         {
             SetInitialState(innerStateName, stateName, orthogonalIndex);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> StartAt(
+        public StateMachine<TState, TTransition, TSignal> Initial(
             TState innerStateName, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
         {
             SetInitialState(innerStateName, state, orthogonalIndex);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> StartAt(
+        public StateMachine<TState, TTransition, TSignal> Initial(
             State<TState, TTransition, TSignal> innerState, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
         {
             SetInitialState(innerState, state, orthogonalIndex);

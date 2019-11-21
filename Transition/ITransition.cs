@@ -35,9 +35,5 @@ namespace StateMachineFramework
         new State<TState, TTransition, TSignal> StartState { get; }
 
         new State<TState, TTransition, TSignal> EndState { get; }
-
-        bool SetTransition(State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState);
-
-        bool AddSignal(Signal<TState, TTransition, TSignal> signal);
     }
 }

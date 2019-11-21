@@ -9,6 +9,11 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
+        public OrthogonalMachine<TState, TTransition, TSignal> BeginOrthogonal(int orthogonalIndex)
+        {
+            return this.OrthogonalMachinesI[orthogonalIndex];
+        }
+
         public State<TState, TTransition, TSignal> Action(IStateAction action)
         {
             AddAction(action);

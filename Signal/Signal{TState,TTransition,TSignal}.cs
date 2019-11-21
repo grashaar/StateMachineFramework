@@ -52,32 +52,6 @@ namespace StateMachineFramework
             this.actions = new SignalActionList();
         }
 
-        public bool AddTransition(Transition<TState, TTransition, TSignal> transition)
-        {
-            if (this.SignalToI.Exists(t => t.Name.Equals(transition.Name)))
-            {
-                return false;
-            }
-
-            this.SignalToI.Add(transition);
-            return true;
-        }
-
-        public void AddEmitCondition(SignalCondition<TState, TTransition, TSignal> condition)
-        {
-            this.EmitConditionsI.Add(condition);
-        }
-
-        public void AddTransitionCondition(SignalCondition<TState, TTransition, TSignal> condition, Transition<TState, TTransition, TSignal> transition)
-        {
-            if (condition == null || transition == null || !this.SignalToI.Exists(t => t.Name.Equals(transition.Name)))
-            {
-                return;
-            }
-
-            this.TransitionConditionsI.Add(condition, transition);
-        }
-
         public override bool AddAction(ISignalAction action)
         {
             if (action == null || this.actions.Contains(action))
@@ -182,6 +156,32 @@ namespace StateMachineFramework
         public override string ToString()
         {
             return this.Name.ToString();
+        }
+
+        internal bool AddTransition(Transition<TState, TTransition, TSignal> transition)
+        {
+            if (this.SignalToI.Exists(t => t.Name.Equals(transition.Name)))
+            {
+                return false;
+            }
+
+            this.SignalToI.Add(transition);
+            return true;
+        }
+
+        internal void AddEmitCondition(SignalCondition<TState, TTransition, TSignal> condition)
+        {
+            this.EmitConditionsI.Add(condition);
+        }
+
+        internal void AddTransitionCondition(SignalCondition<TState, TTransition, TSignal> condition, Transition<TState, TTransition, TSignal> transition)
+        {
+            if (condition == null || transition == null || !this.SignalToI.Exists(t => t.Name.Equals(transition.Name)))
+            {
+                return;
+            }
+
+            this.TransitionConditionsI.Add(condition, transition);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

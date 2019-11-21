@@ -10,7 +10,7 @@ namespace StateMachineFramework
 
         IReadOnlyList<ITransition> Transitions { get; }
 
-        IReadOnlyDictionary<int, IOrthogonal> Orthogonals { get; }
+        IReadOnlyDictionary<int, IOrthogonalMachine> OrthogonalMachines { get; }
 
         bool HasInnerState { get; }
 
@@ -34,16 +34,6 @@ namespace StateMachineFramework
 
         new IReadOnlyList<Transition<TState, TTransition, TSignal>> Transitions { get; }
 
-        new IReadOnlyDictionary<int, Orthogonal<TState, TTransition, TSignal>> Orthogonals { get; }
-
-        bool AddTransition(Transition<TState, TTransition, TSignal> transition, State<TState, TTransition, TSignal> state);
-
-        bool AddOrthogonal(int index);
-
-        bool AddInnerState(State<TState, TTransition, TSignal> innerState, int index = 0);
-
-        bool SetInitialInnerState(State<TState, TTransition, TSignal> innerState, int index = 0);
-
-        bool SetStateMachine(StateMachine<TState, TTransition, TSignal> machine);
+        new IReadOnlyDictionary<int, OrthogonalMachine<TState, TTransition, TSignal>> OrthogonalMachines { get; }
     }
 }

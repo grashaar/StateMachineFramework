@@ -35,11 +35,5 @@ namespace StateMachineFramework
         new IReadOnlyList<SignalCondition<TState, TTransition, TSignal>> EmitConditions { get; }
 
         new IReadOnlyDictionary<SignalCondition<TState, TTransition, TSignal>, Transition<TState, TTransition, TSignal>> TransitionConditions { get; }
-
-        bool AddTransition(Transition<TState, TTransition, TSignal> transition);
-
-        void AddEmitCondition(SignalCondition<TState, TTransition, TSignal> condition);
-
-        void AddTransitionCondition(SignalCondition<TState, TTransition, TSignal> condition, Transition<TState, TTransition, TSignal> transition);
     }
 }

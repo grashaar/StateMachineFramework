@@ -1,20 +1,20 @@
 ﻿namespace StateMachineFramework
 {
-    public sealed class Orthogonal<TState, TTransition, TSignal> : IOrthogonal<TState, TTransition, TSignal>
+    public sealed partial class OrthogonalMachine<TState, TTransition, TSignal> : IOrthogonalMachine<TState, TTransition, TSignal>
     {
         public int Index { get; }
 
         public StateMachine<TState, TTransition, TSignal> Machine { get; }
 
-        public State<TState, TTransition, TSignal> State { get; }
+        public State<TState, TTransition, TSignal> OfState { get; }
 
         public State<TState, TTransition, TSignal> CurrentState
             => this.Machine.CurrentStateI;
 
-        internal Orthogonal(State<TState, TTransition, TSignal> state, int index)
+        internal OrthogonalMachine(State<TState, TTransition, TSignal> state, int index)
         {
             this.Index = index;
-            this.State = state;
+            this.OfState = state;
             this.Machine = new StateMachine<TState, TTransition, TSignal>();
 
             ConnectStateChangedEvent();
@@ -22,8 +22,8 @@
 
         internal void ConnectStateChangedEvent()
         {
-            if (this.State.MachineI != null)
-                this.Machine.AddAction(new FireOnStateChangedAction(this.State.MachineI));
+            if (this.OfState.MachineI != null)
+                this.Machine.AddAction(new FireOnStateChangedAction(this.OfState.MachineI));
         }
 
         private sealed class FireOnStateChangedAction : StateMachineActionBase

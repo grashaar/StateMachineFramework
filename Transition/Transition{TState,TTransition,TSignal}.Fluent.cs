@@ -9,6 +9,29 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
+        public Transition<TState, TTransition, TSignal> Signal(TSignal signalName, out Signal<TState, TTransition, TSignal> signal)
+        {
+            this.Machine.ConnectSignal(signalName, this, out signal);
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> Signal(TSignal signalName, Action<Signal<TState, TTransition, TSignal>> callback)
+        {
+            this.Machine.ConnectSignal(signalName, this, out Signal<TState, TTransition, TSignal> signal);
+            callback?.Invoke(signal);
+
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> Signal(TSignal signalName, out Signal<TState, TTransition, TSignal> signal,
+            Action<Signal<TState, TTransition, TSignal>> callback)
+        {
+            this.Machine.ConnectSignal(signalName, this, out signal);
+            callback?.Invoke(signal);
+
+            return this;
+        }
+
         public Transition<TState, TTransition, TSignal> Action(ITransitionAction action)
         {
             AddAction(action);
