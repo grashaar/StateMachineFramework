@@ -16,7 +16,7 @@ namespace StateMachineFramework
         IReadOnlyList<ITransition> IState.Transitions
             => GetTransitions();
 
-        IReadOnlyDictionary<int, IOrthogonalMachine> IState.OrthogonalMachines
+        IReadOnlyDictionary<int, IOrthogonalStateMachine> IState.OrthogonalMachines
             => GetOrthogonalMachines();
 
         public bool HasInnerState { get; protected set; }
@@ -41,6 +41,6 @@ namespace StateMachineFramework
         protected abstract IReadOnlyList<ITransition> GetTransitions();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected abstract IReadOnlyDictionary<int, IOrthogonalMachine> GetOrthogonalMachines();
+        protected abstract IReadOnlyDictionary<int, IOrthogonalStateMachine> GetOrthogonalMachines();
     }
 }

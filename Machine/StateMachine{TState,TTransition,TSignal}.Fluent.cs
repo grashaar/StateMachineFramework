@@ -10,47 +10,47 @@ namespace StateMachineFramework
             return this;
         }
 
-        public State<TState, TTransition, TSignal> Begin(TState stateName)
+        public State<TState, TTransition, TSignal> BeginState(TState stateName)
         {
             return GetStateByName(stateName);
         }
 
-        public State<TState, TTransition, TSignal> Begin(IState state)
+        public State<TState, TTransition, TSignal> BeginState(IState state)
         {
             return GetStateByName((TState)state.Name);
         }
 
-        public State<TState, TTransition, TSignal> Begin(IState<TState> state)
+        public State<TState, TTransition, TSignal> BeginState(IState<TState> state)
         {
             return GetStateByName(state.Name);
         }
 
-        public Signal<TState, TTransition, TSignal> Begin(TSignal signalName)
+        public Signal<TState, TTransition, TSignal> BeginSignal(TSignal signalName)
         {
             return GetSignalByName(signalName);
         }
 
-        public Signal<TState, TTransition, TSignal> Begin(ISignal signal)
+        public Signal<TState, TTransition, TSignal> BeginSignal(ISignal signal)
         {
             return GetSignalByName((TSignal)signal.Name);
         }
 
-        public Signal<TState, TTransition, TSignal> Begin(ISignal<TSignal> signal)
+        public Signal<TState, TTransition, TSignal> BeginSignal(ISignal<TSignal> signal)
         {
             return GetSignalByName(signal.Name);
         }
 
-        public Transition<TState, TTransition, TSignal> Begin(TTransition transitionName)
+        public Transition<TState, TTransition, TSignal> BeginTransition(TTransition transitionName)
         {
             return GetTransitionByName(transitionName);
         }
 
-        public Transition<TState, TTransition, TSignal> Begin(ITransition transition)
+        public Transition<TState, TTransition, TSignal> BeginTransition(ITransition transition)
         {
             return GetTransitionByName((TTransition)transition.Name);
         }
 
-        public Transition<TState, TTransition, TSignal> Begin(ITransition<TTransition> transition)
+        public Transition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition)
         {
             return GetTransitionByName(transition.Name);
         }

@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
     public readonly partial struct OrthogonalState<TState, TTransition, TSignal>
     {
-        public OrthogonalMachine<TState, TTransition, TSignal> End()
+        public OrthogonalStateMachine<TState, TTransition, TSignal> End()
         {
             return this.Machine;
+        }
+
+        public OrthogonalMachine<TState, TTransition, TSignal> EndToParent()
+        {
+            return new OrthogonalMachine<TState, TTransition, TSignal>(
+                new OrthogonalState<TState, TTransition, TSignal>(this.Parent.Machine, this.Parent.State), this.Machine);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public OrthogonalMachine<TState, TTransition, TSignal> BeginOrthogonal(int orthogonalIndex)
+        {
+            return new OrthogonalMachine<TState, TTransition, TSignal>(this, this.State.OrthogonalMachinesI[orthogonalIndex]);
         }
 
         public OrthogonalState<TState, TTransition, TSignal> Action(IStateAction action)

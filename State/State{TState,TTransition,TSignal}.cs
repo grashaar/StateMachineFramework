@@ -17,7 +17,7 @@ namespace StateMachineFramework
         public override IReadOnlyList<IStateAction> Actions
             => this.actions;
 
-        public IReadOnlyDictionary<int, OrthogonalMachine<TState, TTransition, TSignal>> OrthogonalMachines
+        public IReadOnlyDictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> OrthogonalMachines
             => this.OrthogonalMachinesI;
 
         /// <summary>
@@ -33,20 +33,20 @@ namespace StateMachineFramework
         /// <summary>
         /// Internal <see cref="OrthogonalMachines"/>
         /// </summary>
-        internal Dictionary<int, OrthogonalMachine<TState, TTransition, TSignal>> OrthogonalMachinesI { get; }
+        internal Dictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> OrthogonalMachinesI { get; }
 
-        private readonly List<OrthogonalMachine<TState, TTransition, TSignal>> orthogonalMachinesUpdate;
+        private readonly List<OrthogonalStateMachine<TState, TTransition, TSignal>> orthogonalMachinesUpdate;
         private readonly StateActionList actions;
 
         internal State(TState name) : base(name)
         {
             this.TransitionsI = new Dictionary<Transition<TState, TTransition, TSignal>, State<TState, TTransition, TSignal>>();
 
-            this.OrthogonalMachinesI = new Dictionary<int, OrthogonalMachine<TState, TTransition, TSignal>> {
-                { 0, new OrthogonalMachine<TState, TTransition, TSignal>(this, 0) }
+            this.OrthogonalMachinesI = new Dictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> {
+                { 0, new OrthogonalStateMachine<TState, TTransition, TSignal>(this, 0) }
             };
 
-            this.orthogonalMachinesUpdate = new List<OrthogonalMachine<TState, TTransition, TSignal>>();
+            this.orthogonalMachinesUpdate = new List<OrthogonalStateMachine<TState, TTransition, TSignal>>();
             this.actions = new StateActionList();
         }
 
@@ -138,7 +138,7 @@ namespace StateMachineFramework
         {
             if (this.OrthogonalMachinesI.Count == index)
             {
-                this.OrthogonalMachinesI.Add(index, new OrthogonalMachine<TState, TTransition, TSignal>(this, index));
+                this.OrthogonalMachinesI.Add(index, new OrthogonalStateMachine<TState, TTransition, TSignal>(this, index));
                 return true;
             }
 
@@ -228,7 +228,7 @@ namespace StateMachineFramework
             => this.TransitionsI.Keys.ToList();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override IReadOnlyDictionary<int, IOrthogonalMachine> GetOrthogonalMachines()
-            => this.OrthogonalMachinesI.ToDictionary(x => x.Key, x => x.Value as IOrthogonalMachine);
+        protected override IReadOnlyDictionary<int, IOrthogonalStateMachine> GetOrthogonalMachines()
+            => this.OrthogonalMachinesI.ToDictionary(x => x.Key, x => x.Value as IOrthogonalStateMachine);
     }
 }
