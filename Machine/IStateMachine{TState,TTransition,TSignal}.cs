@@ -8,6 +8,8 @@ namespace StateMachineFramework
 
         new State<TState, TTransition, TSignal> InitialState { get; }
 
+        new Transition<TState, TTransition, TSignal> CurrentTransition { get; }
+
         new IReadOnlyList<State<TState, TTransition, TSignal>> States { get; }
 
         new IReadOnlyList<Signal<TState, TTransition, TSignal>> Signals { get; }
@@ -85,5 +87,7 @@ namespace StateMachineFramework
         bool TryCreateTransition(TTransition transitionName, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState, out Transition<TState, TTransition, TSignal> transition);
 
         bool TryCreateTransition(TTransition transitionName, TState startStateName, TState endStateName, out Transition<TState, TTransition, TSignal> transition);
+
+        void EmitSignal(TSignal signalName);
     }
 }

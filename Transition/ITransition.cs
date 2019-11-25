@@ -18,7 +18,17 @@ namespace StateMachineFramework
 
         IReadOnlyList<ITransitionAction> Actions { get; }
 
+        IReadOnlyList<ITransitionCondition> StartConditions { get; }
+
+        IReadOnlyList<ITransitionCondition> FinishConditions { get; }
+
         bool AddAction(ITransitionAction action);
+
+        bool AddStartCondition(ITransitionCondition condition);
+
+        bool AddFinishCondition(ITransitionCondition condition);
+
+        void Terminate();
     }
 
     public interface ITransition<T> : ITransition

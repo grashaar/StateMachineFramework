@@ -22,6 +22,8 @@ namespace StateMachineFramework
 
         protected override void OnStart(TransitionArgs args) { }
 
+        protected override void OnInvoke(TransitionArgs args) { }
+
         protected override void OnIntialize() { }
     }
 }

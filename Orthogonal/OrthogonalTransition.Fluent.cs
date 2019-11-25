@@ -31,6 +31,42 @@ namespace StateMachineFramework
             return this;
         }
 
+        public OrthogonalTransition<TState, TTransition, TSignal> StartWhen(ITransitionCondition condition)
+        {
+            this.Transition.StartWhen(condition);
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> StartWhen<T>() where T : ITransitionCondition, new()
+        {
+            this.Transition.StartWhen<T>();
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> StartWhen(Func<bool> callback)
+        {
+            this.Transition.StartWhen(callback);
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> FinishWhen(ITransitionCondition condition)
+        {
+            this.Transition.StartWhen(condition);
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> FinishWhen<T>() where T : ITransitionCondition, new()
+        {
+            this.Transition.FinishWhen<T>();
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> FinishWhen(Func<bool> callback)
+        {
+            this.Transition.FinishWhen(callback);
+            return this;
+        }
+
         public OrthogonalTransition<TState, TTransition, TSignal> Action(ITransitionAction action)
         {
             this.Transition.Action(action);
@@ -40,6 +76,18 @@ namespace StateMachineFramework
         public OrthogonalTransition<TState, TTransition, TSignal> Action<T>() where T : ITransitionAction, new()
         {
             this.Transition.Action<T>();
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> OnInvoke(Action<ITransitionAction, TransitionArgs> action)
+        {
+            this.Transition.OnInvoke(action);
+            return this;
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> OnInvoke(string name, Action<ITransitionAction, TransitionArgs> action)
+        {
+            this.Transition.OnInvoke(name, action);
             return this;
         }
 

@@ -13,6 +13,9 @@ namespace StateMachineFramework
         public State<TState, TTransition, TSignal> InitialState
             => this.InitialStateI;
 
+        public Transition<TState, TTransition, TSignal> CurrentTransition
+            => this.CurrentTransitionI;
+
         public IReadOnlyList<State<TState, TTransition, TSignal>> States
             => this.StatesI.Values.ToList();
 
@@ -30,6 +33,9 @@ namespace StateMachineFramework
 
         IState IStateMachine.CurrentState
             => this.CurrentStateI;
+
+        ITransition IStateMachine.CurrentTransition
+            => this.CurrentTransitionI;
 
         IReadOnlyList<IState> IStateMachine.States
             => this.StatesI.Values.ToList();
@@ -49,6 +55,11 @@ namespace StateMachineFramework
         /// Internal <see cref="CurrentState"/>
         /// </summary>
         internal State<TState, TTransition, TSignal> CurrentStateI { get; private set; }
+
+        /// <summary>
+        /// Internal <see cref="CurrentTransition"/>
+        /// </summary>
+        internal Transition<TState, TTransition, TSignal> CurrentTransitionI { get; private set; }
 
         /// <summary>
         /// Internal <see cref="States"/>
@@ -548,6 +559,25 @@ namespace StateMachineFramework
         public void Tick()
         {
             this.CurrentStateI?.Update();
+            this.CurrentTransitionI?.Update();
+        }
+
+        public void EmitSignal(object signalName)
+        {
+            if (signalName is TSignal name)
+            {
+                EmitSignal(name);
+            }
+        }
+
+        public void EmitSignal(TSignal signalName)
+        {
+            if (!this.SignalsI.ContainsKey(signalName))
+            {
+                return;
+            }
+
+            this.SignalsI[signalName].Emit();
         }
 
         public State<TState, TTransition, TSignal> GetStateByName(TState stateName)
@@ -590,43 +620,72 @@ namespace StateMachineFramework
             this.actions.StateChange(priorState, formerState);
         }
 
-        internal void EmitSignal(TSignal signalName)
+        internal void ProcessSignal(Signal<TState, TTransition, TSignal> signal)
         {
-            if (!this.SignalsI.ContainsKey(signalName))
-            {
+            if (this.CurrentTransitionI != null)
                 return;
-            }
 
-            var signal = this.SignalsI[signalName];
-            ProcessSignal(signal);
-        }
-
-        internal bool ProcessSignal(Signal<TState, TTransition, TSignal> signal)
-        {
-            // maybe check transition ambiguity... (If two or more transitions are available from the current state)
             foreach (var transition in signal.SignalToI)
             {
                 if (this.CurrentStateI.TransitionsI.ContainsKey(transition) && transition.CanTransitionI)
                 {
-                    this.CurrentStateI.Exit();
-                    var continueTransition = transition.Start();
-
-                    if (!continueTransition)
-                    {
-                        this.CurrentStateI.Enter();
-                        return false;
-                    }
-
-                    transition.Finish();
-                    this.CurrentStateI = transition.EndStateI;
-                    this.CurrentStateI.Enter();
-
-                    FireOnStateChanged(transition.StartStateI, transition.EndStateI);
-                    return true;
+                    this.CurrentTransitionI = transition;
+                    break;
                 }
             }
 
-            return this.CurrentStateI.PassSignal(signal);
+            if (this.CurrentTransitionI == null)
+            {
+                this.CurrentStateI.PassSignal(signal);
+                return;
+            }
+
+            if (!this.CurrentTransitionI.Invoke(signal))
+            {
+                signal.DoNotProcess();
+                this.CurrentTransitionI = null;
+            }
+        }
+
+        internal void TerminateTransition(Transition<TState, TTransition, TSignal> transition, Signal<TState, TTransition, TSignal> signal)
+        {
+            if (this.CurrentTransitionI != transition)
+                return;
+
+            if (this.CurrentStateI != transition.EndStateI)
+                signal.DoNotProcess();
+
+            this.CurrentTransitionI = null;
+        }
+
+        internal void StartTransition(Transition<TState, TTransition, TSignal> transition, Signal<TState, TTransition, TSignal> signal)
+        {
+            if (this.CurrentTransitionI != transition)
+                return;
+
+            this.CurrentStateI.Exit();
+
+            if (!transition.Start())
+            {
+                this.CurrentStateI.Enter();
+                transition.Terminate();
+                return;
+            }
+
+            this.CurrentStateI = transition.EndStateI;
+            this.CurrentStateI.Enter();
+
+            FireOnStateChanged(transition.StartStateI, transition.EndStateI);
+            signal.DoProcess();
+        }
+
+        internal void FinishTransition(Transition<TState, TTransition, TSignal> transition)
+        {
+            if (this.CurrentTransitionI != transition)
+                return;
+
+            transition.Finish();
+            this.CurrentTransitionI = null;
         }
     }
 }

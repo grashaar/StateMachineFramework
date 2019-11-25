@@ -32,6 +32,42 @@ namespace StateMachineFramework
             return this;
         }
 
+        public Transition<TState, TTransition, TSignal> StartWhen(ITransitionCondition condition)
+        {
+            AddStartCondition(condition);
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> StartWhen<T>() where T : ITransitionCondition, new()
+        {
+            AddStartCondition(new T());
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> StartWhen(Func<bool> callback)
+        {
+            AddStartCondition(new TransitionCondition(callback));
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> FinishWhen(ITransitionCondition condition)
+        {
+            AddFinishCondition(condition);
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> FinishWhen<T>() where T : ITransitionCondition, new()
+        {
+            AddFinishCondition(new T());
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> FinishWhen(Func<bool> callback)
+        {
+            AddFinishCondition(new TransitionCondition(callback));
+            return this;
+        }
+
         public Transition<TState, TTransition, TSignal> Action(ITransitionAction action)
         {
             AddAction(action);
@@ -41,6 +77,18 @@ namespace StateMachineFramework
         public Transition<TState, TTransition, TSignal> Action<T>() where T : ITransitionAction, new()
         {
             AddAction(new T());
+            return this;
+        }
+
+        public Transition<TState, TTransition, TSignal> OnInvoke(Action<ITransitionAction, TransitionArgs> action)
+            => OnInvoke(null, action);
+
+        public Transition<TState, TTransition, TSignal> OnInvoke(string name, Action<ITransitionAction, TransitionArgs> action)
+        {
+            if (action == null)
+                return this;
+
+            AddAction(new TransitionActionInvoke(name, action));
             return this;
         }
 

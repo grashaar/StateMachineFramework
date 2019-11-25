@@ -10,6 +10,14 @@ namespace StateMachineFramework
 
         internal TransitionActionList(IEnumerable<ITransitionAction> collection) : base(collection) { }
 
+        internal void Invoke(TransitionArgs args)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                this[i]?.Invoke(args);
+            }
+        }
+
         internal void Start(TransitionArgs args)
         {
             for (var i = 0; i < this.Count; i++)

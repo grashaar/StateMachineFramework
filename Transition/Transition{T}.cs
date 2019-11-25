@@ -26,12 +26,22 @@ namespace StateMachineFramework
 
         public abstract IReadOnlyList<ITransitionAction> Actions { get; }
 
+        public abstract IReadOnlyList<ITransitionCondition> StartConditions { get; }
+
+        public abstract IReadOnlyList<ITransitionCondition> FinishConditions { get; }
+
         public Transition(T name)
         {
             this.Name = name;
         }
 
         public abstract bool AddAction(ITransitionAction action);
+
+        public abstract bool AddStartCondition(ITransitionCondition condition);
+
+        public abstract bool AddFinishCondition(ITransitionCondition condition);
+
+        public abstract void Terminate();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract IStateMachine GetMachine();

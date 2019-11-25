@@ -18,7 +18,7 @@ namespace StateMachineFramework
 
         bool AddAction(ISignalAction action);
 
-        bool Emit();
+        void Emit();
     }
 
     public interface ISignal<T> : ISignal

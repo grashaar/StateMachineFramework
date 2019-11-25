@@ -6,6 +6,8 @@
 
         ITransition Transition { get; set; }
 
+        void Invoke(TransitionArgs args);
+
         void Start(TransitionArgs args);
 
         void Finish();

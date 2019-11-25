@@ -34,7 +34,7 @@ namespace StateMachineFramework
 
         public abstract bool AddAction(ISignalAction action);
 
-        public abstract bool Emit();
+        public abstract void Emit();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract IStateMachine GetMachine();

@@ -9,48 +9,6 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
-        public OrthogonalSignal<TState, TTransition, TSignal> Emit(
-            params TState[] conditionalStateNames)
-        {
-            this.Signal.Emit(conditionalStateNames);
-            return this;
-        }
-
-        public OrthogonalSignal<TState, TTransition, TSignal> Emit(
-            params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Signal.Emit(conditionalStates);
-            return this;
-        }
-
-        public OrthogonalSignal<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, params TState[] conditionalStateNames)
-        {
-            this.Signal.Transition(transitionName, conditionalStateNames);
-            return this;
-        }
-
-        public OrthogonalSignal<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Signal.Transition(transitionName, conditionalStates);
-            return this;
-        }
-
-        public OrthogonalSignal<TState, TTransition, TSignal> Transition(
-            Transition<TState, TTransition, TSignal> transition, params TState[] conditionalStateNames)
-        {
-            this.Signal.Transition(transition, conditionalStateNames);
-            return this;
-        }
-
-        public OrthogonalSignal<TState, TTransition, TSignal> Transition(
-            Transition<TState, TTransition, TSignal> transition, params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Signal.Transition(transition, conditionalStates);
-            return this;
-        }
-
         public OrthogonalSignal<TState, TTransition, TSignal> EmitWhen(
             params TState[] conditionalStateNames)
         {

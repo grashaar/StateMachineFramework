@@ -20,10 +20,15 @@
             this.Name = name ?? "Untitled";
         }
 
-        public void Start(TransitionArgs args)
+        public void Invoke(TransitionArgs args)
         {
             Initialize();
 
+            OnInvoke(args);
+        }
+
+        public void Start(TransitionArgs args)
+        {
             OnStart(args);
         }
 
@@ -45,6 +50,8 @@
             => this.transition = value;
 
         protected virtual void OnIntialize() { }
+
+        protected virtual void OnInvoke(TransitionArgs args) { }
 
         protected virtual void OnStart(TransitionArgs args) { }
 

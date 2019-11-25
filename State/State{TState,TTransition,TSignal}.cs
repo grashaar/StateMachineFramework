@@ -203,22 +203,15 @@ namespace StateMachineFramework
             }
         }
 
-        internal bool PassSignal(Signal<TState, TTransition, TSignal> signal)
+        internal void PassSignal(Signal<TState, TTransition, TSignal> signal)
         {
-            var signalProcessed = false;
+            if (!this.HasInnerState)
+                return;
 
-            if (this.HasInnerState)
+            foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
-                foreach (var orthogonal in this.OrthogonalMachinesI.Values)
-                {
-                    if (orthogonal.Machine.ProcessSignal(signal))
-                    {
-                        signalProcessed = true;
-                    }
-                }
+                orthogonal.Machine.ProcessSignal(signal);
             }
-
-            return signalProcessed;
         }
 
         public override string ToString()

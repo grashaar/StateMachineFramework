@@ -76,7 +76,7 @@ namespace StateMachineFramework
             return true;
         }
 
-        public override bool Emit()
+        public override void Emit()
         {
             this.actions.Emit();
 
@@ -99,7 +99,7 @@ namespace StateMachineFramework
                 var args = new SignalNotProcessedArgs(SignalFailure.EmitConditionsNotMet, failedConditions);
                 this.actions.NotProcess(args);
 
-                return false;
+                return;
             }
             #endregion
 
@@ -127,30 +127,31 @@ namespace StateMachineFramework
                 var args = new SignalNotProcessedArgs(SignalFailure.TransitionConditionsNotMet, failedConditions);
                 this.actions.NotProcess(args);
 
-                return false;
+                return;
             }
-            else if (conditionMetCount > 1)
+
+            if (conditionMetCount > 1)
             {
                 var failedConditions = this.TransitionConditionsI.Keys.ToList<ISignalCondition>();
                 var args = new SignalNotProcessedArgs(SignalFailure.TransitionAmbiguity, failedConditions);
                 this.actions.NotProcess(args);
 
-                return false;
+                return;
             }
             #endregion
 
-            #region Process Signal
-            if (!this.MachineI.ProcessSignal(this))
-            {
-                var args = new SignalNotProcessedArgs(SignalFailure.NoTransitionToState);
-                this.actions.NotProcess(args);
+            this.MachineI.ProcessSignal(this);
+        }
 
-                return false;
-            }
+        internal void DoNotProcess()
+        {
+            var args = new SignalNotProcessedArgs(SignalFailure.NoTransitionToState);
+            this.actions.NotProcess(args);
+        }
 
+        internal void DoProcess()
+        {
             this.actions.Process();
-            return true;
-            #endregion
         }
 
         public override string ToString()

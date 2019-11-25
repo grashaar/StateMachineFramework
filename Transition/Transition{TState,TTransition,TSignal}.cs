@@ -5,6 +5,11 @@ namespace StateMachineFramework
 {
     public sealed partial class Transition<TState, TTransition, TSignal> : Transition<TTransition>, ITransition<TState, TTransition, TSignal>
     {
+        private enum Status
+        {
+            Idle, Starting, Finishing
+        }
+
         public override bool CanTransition
             => this.CanTransitionI;
 
@@ -22,6 +27,12 @@ namespace StateMachineFramework
 
         public override IReadOnlyList<ITransitionAction> Actions
             => this.actions;
+
+        public override IReadOnlyList<ITransitionCondition> StartConditions
+            => this.startConditions;
+
+        public override IReadOnlyList<ITransitionCondition> FinishConditions
+            => this.finishConditions;
 
         /// <summary>
         /// Internal <see cref="Machine"/>
@@ -49,13 +60,24 @@ namespace StateMachineFramework
         internal bool CanTransitionI { get; set; }
 
         private readonly TransitionActionList actions;
+        private readonly TransitionConditionList startConditions;
+        private readonly TransitionConditionList finishConditions;
+
+        private Status status;
+        private Signal<TState, TTransition, TSignal> signal;
 
         internal Transition(StateMachine<TState, TTransition, TSignal> machine, TTransition name) : base(name)
         {
             this.MachineI = machine;
             this.CanTransitionI = true;
             this.SignalsI = new List<Signal<TState, TTransition, TSignal>>();
+
             this.actions = new TransitionActionList();
+            this.startConditions = new TransitionConditionList();
+            this.finishConditions = new TransitionConditionList();
+
+            this.status = Status.Idle;
+            this.signal = null;
         }
 
         internal Transition(StateMachine<TState, TTransition, TSignal> machine, TTransition name, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState) : this(machine, name)
@@ -87,6 +109,33 @@ namespace StateMachineFramework
             return true;
         }
 
+        public override bool AddStartCondition(ITransitionCondition condition)
+        {
+            if (condition == null || this.startConditions.Contains(condition))
+                return false;
+
+            this.startConditions.Add(condition);
+            return true;
+        }
+
+        public override bool AddFinishCondition(ITransitionCondition condition)
+        {
+            if (condition == null || this.finishConditions.Contains(condition))
+                return false;
+
+            this.finishConditions.Add(condition);
+            return true;
+        }
+
+        public override void Terminate()
+        {
+            var signal = this.signal;
+            this.status = Status.Idle;
+            this.signal = null;
+
+            this.MachineI.TerminateTransition(this, signal);
+        }
+
         internal bool SetTransition(State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState)
         {
             if (this.StartStateI == null && this.EndStateI == null)
@@ -102,12 +151,44 @@ namespace StateMachineFramework
         internal bool AddSignal(Signal<TState, TTransition, TSignal> signal)
         {
             if (this.SignalsI.Exists(ts => ts.Name.Equals(signal.Name)))
-            {
                 return false;
-            }
 
             this.SignalsI.Add(signal);
             return true;
+        }
+
+        internal bool Invoke(Signal<TState, TTransition, TSignal> signal)
+        {
+            var args = new TransitionArgs();
+            this.actions.Invoke(args);
+
+            if (args.CancelTransition)
+                return false;
+
+            this.signal = signal;
+            this.status = Status.Starting;
+            return true;
+        }
+
+        internal void Update()
+        {
+            switch (this.status)
+            {
+                case Status.Starting:
+                    if (this.startConditions.Validate())
+                    {
+                        this.MachineI.StartTransition(this, this.signal);
+                        this.status = Status.Finishing;
+                    }
+                    break;
+
+                case Status.Finishing:
+                    if (this.finishConditions.Validate())
+                    {
+                        this.MachineI.FinishTransition(this);
+                    }
+                    break;
+            }
         }
 
         internal bool Start()
@@ -116,15 +197,15 @@ namespace StateMachineFramework
             this.actions.Start(args);
 
             if (args.CancelTransition)
-            {
                 return false;
-            }
 
             return true;
         }
 
         internal void Finish()
         {
+            this.status = Status.Idle;
+            this.signal = null;
             this.actions.Finish();
         }
 

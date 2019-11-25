@@ -10,6 +10,8 @@ namespace StateMachineFramework
 
         IState CurrentState { get; }
 
+        ITransition CurrentTransition { get; }
+
         IReadOnlyList<IState> States { get; }
 
         IReadOnlyList<ISignal> Signals { get; }
@@ -29,5 +31,7 @@ namespace StateMachineFramework
         void Terminate();
 
         void Tick();
+
+        void EmitSignal(object signalName);
     }
 }

@@ -9,42 +9,6 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
-        public Signal<TState, TTransition, TSignal> Emit(params TState[] conditionalStateNames)
-        {
-            this.Machine.EmitCondition(this, conditionalStateNames);
-            return this;
-        }
-
-        public Signal<TState, TTransition, TSignal> Emit(params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Machine.EmitCondition(this, conditionalStates);
-            return this;
-        }
-
-        public Signal<TState, TTransition, TSignal> Transition(TTransition transitionName, params TState[] conditionalStateNames)
-        {
-            this.Machine.TransitionCondition(this, transitionName, conditionalStateNames);
-            return this;
-        }
-
-        public Signal<TState, TTransition, TSignal> Transition(TTransition transitionName, params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Machine.TransitionCondition(this, transitionName, conditionalStates);
-            return this;
-        }
-
-        public Signal<TState, TTransition, TSignal> Transition(Transition<TState, TTransition, TSignal> transition, params TState[] conditionalStateNames)
-        {
-            this.Machine.TransitionCondition(this, transition, conditionalStateNames);
-            return this;
-        }
-
-        public Signal<TState, TTransition, TSignal> Transition(Transition<TState, TTransition, TSignal> transition, params State<TState, TTransition, TSignal>[] conditionalStates)
-        {
-            this.Machine.TransitionCondition(this, transition, conditionalStates);
-            return this;
-        }
-
         public Signal<TState, TTransition, TSignal> EmitWhen(params TState[] conditionalStateNames)
         {
             this.Machine.CreateEmitCondition(this, conditionalStateNames);

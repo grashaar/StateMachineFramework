@@ -20,6 +20,8 @@ namespace StateMachineFramework
             this.action(this, args);
         }
 
+        protected override void OnInvoke(TransitionArgs args) { }
+
         protected override void OnFinish() { }
 
         protected override void OnIntialize() { }
