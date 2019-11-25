@@ -9,7 +9,7 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
-        public OrthogonalMachine<TState, TTransition, TSignal> EndToParent()
+        public OrthogonalMachine<TState, TTransition, TSignal> End(int orthogonalIndex)
         {
             return new OrthogonalMachine<TState, TTransition, TSignal>(
                 new OrthogonalState<TState, TTransition, TSignal>(this.Parent.Machine, this.Parent.State), this.Machine);
