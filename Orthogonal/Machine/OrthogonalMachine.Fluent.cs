@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
@@ -10,67 +9,49 @@ namespace StateMachineFramework
             return this.OfState;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalState<TState, TTransition, TSignal> State(in OrthogonalState<TState, TTransition, TSignal> value)
-        {
-            return new OrthogonalState<TState, TTransition, TSignal>(this.Machine, value.State, this.OfState);
-        }
-
         public OrthogonalState<TState, TTransition, TSignal> BeginState(TState stateName)
         {
-            return State(this.Machine.BeginState(stateName));
+            return this.Machine.BeginState(stateName, this.OfState);
         }
 
         public OrthogonalState<TState, TTransition, TSignal> BeginState(IState state)
         {
-            return State(this.Machine.BeginState(state));
+            return this.Machine.BeginState(state, this.OfState);
         }
 
         public OrthogonalState<TState, TTransition, TSignal> BeginState(IState<TState> state)
         {
-            return State(this.Machine.BeginState(state));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalSignal<TState, TTransition, TSignal> Signal(in OrthogonalSignal<TState, TTransition, TSignal> value)
-        {
-            return new OrthogonalSignal<TState, TTransition, TSignal>(this.Machine, value.Signal, this.OfState);
+            return this.Machine.BeginState(state, this.OfState);
         }
 
         public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(TSignal signalName)
         {
-            return Signal(this.Machine.BeginSignal(signalName));
+            return this.Machine.BeginSignal(signalName, this.OfState);
         }
 
         public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal signal)
         {
-            return Signal(this.Machine.BeginSignal(signal));
+            return this.Machine.BeginSignal(signal, this.OfState);
         }
 
         public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal<TSignal> signal)
         {
-            return Signal(this.Machine.BeginSignal(signal));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalTransition<TState, TTransition, TSignal> Transition(in OrthogonalTransition<TState, TTransition, TSignal> value)
-        {
-            return new OrthogonalTransition<TState, TTransition, TSignal>(this.Machine, value.Transition, this.OfState);
+            return this.Machine.BeginSignal(signal, this.OfState);
         }
 
         public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(TTransition transitionName)
         {
-            return Transition(this.Machine.BeginTransition(transitionName));
+            return this.Machine.BeginTransition(transitionName, this.OfState);
         }
 
         public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition transition)
         {
-            return Transition(this.Machine.BeginTransition(transition));
+            return this.Machine.BeginTransition(transition, this.OfState);
         }
 
         public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition)
         {
-            return Transition(this.Machine.BeginTransition(transition));
+            return this.Machine.BeginTransition(transition, this.OfState);
         }
 
         public OrthogonalMachine<TState, TTransition, TSignal> State(

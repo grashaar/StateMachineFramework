@@ -11,9 +11,9 @@ namespace StateMachineFramework
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalState<TState, TTransition, TSignal> State(State<TState, TTransition, TSignal> value)
+        private OrthogonalState<TState, TTransition, TSignal> State(State<TState, TTransition, TSignal> value, in OrthogonalState<TState, TTransition, TSignal> parent = default)
         {
-            return new OrthogonalState<TState, TTransition, TSignal>(this, value);
+            return new OrthogonalState<TState, TTransition, TSignal>(this, value, parent);
         }
 
         public OrthogonalState<TState, TTransition, TSignal> BeginState(TState stateName)
@@ -31,10 +31,25 @@ namespace StateMachineFramework
             return State(this.Machine.BeginState(state));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalSignal<TState, TTransition, TSignal> Signal(Signal<TState, TTransition, TSignal> value)
+        internal OrthogonalState<TState, TTransition, TSignal> BeginState(TState stateName, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return new OrthogonalSignal<TState, TTransition, TSignal>(this, value);
+            return State(this.Machine.BeginState(stateName), parent);
+        }
+
+        internal OrthogonalState<TState, TTransition, TSignal> BeginState(IState state, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return State(this.Machine.BeginState(state), parent);
+        }
+
+        internal OrthogonalState<TState, TTransition, TSignal> BeginState(IState<TState> state, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return State(this.Machine.BeginState(state), parent);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private OrthogonalSignal<TState, TTransition, TSignal> Signal(Signal<TState, TTransition, TSignal> value, in OrthogonalState<TState, TTransition, TSignal> parent = default)
+        {
+            return new OrthogonalSignal<TState, TTransition, TSignal>(this, value, parent);
         }
 
         public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(TSignal signalName)
@@ -52,10 +67,25 @@ namespace StateMachineFramework
             return Signal(this.Machine.BeginSignal(signal));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private OrthogonalTransition<TState, TTransition, TSignal> Transition(Transition<TState, TTransition, TSignal> value)
+        internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(TSignal signalName, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return new OrthogonalTransition<TState, TTransition, TSignal>(this, value);
+            return Signal(this.Machine.BeginSignal(signalName), parent);
+        }
+
+        internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal signal, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Signal(this.Machine.BeginSignal(signal), parent);
+        }
+
+        internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal<TSignal> signal, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Signal(this.Machine.BeginSignal(signal), parent);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private OrthogonalTransition<TState, TTransition, TSignal> Transition(Transition<TState, TTransition, TSignal> value, in OrthogonalState<TState, TTransition, TSignal> parent = default)
+        {
+            return new OrthogonalTransition<TState, TTransition, TSignal>(this, value, parent);
         }
 
         public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(TTransition transitionName)
@@ -71,6 +101,21 @@ namespace StateMachineFramework
         public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition)
         {
             return Transition(this.Machine.BeginTransition(transition));
+        }
+
+        internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(TTransition transitionName, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Transition(this.Machine.BeginTransition(transitionName), parent);
+        }
+
+        internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition transition, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Transition(this.Machine.BeginTransition(transition), parent);
+        }
+
+        internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Transition(this.Machine.BeginTransition(transition), parent);
         }
 
         public OrthogonalStateMachine<TState, TTransition, TSignal> State(
