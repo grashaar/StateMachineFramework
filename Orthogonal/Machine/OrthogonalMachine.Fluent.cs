@@ -4,7 +4,7 @@ namespace StateMachineFramework
 {
     public readonly partial struct OrthogonalMachine<TState, TTransition, TSignal>
     {
-        public OrthogonalState<TState, TTransition, TSignal> End()
+        public OrthogonalState<TState, TTransition, TSignal> End(int orthogonalIndex)
         {
             return this.OfState;
         }

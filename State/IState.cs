@@ -10,9 +10,7 @@ namespace StateMachineFramework
 
         IReadOnlyList<ITransition> Transitions { get; }
 
-        IReadOnlyDictionary<int, IOrthogonalStateMachine> OrthogonalMachines { get; }
-
-        bool HasInnerState { get; }
+        IReadOnlyDictionary<int, IOrthogonal> Orthogonals { get; }
 
         bool IsCurrentState { get; }
 
@@ -34,6 +32,6 @@ namespace StateMachineFramework
 
         new IReadOnlyList<Transition<TState, TTransition, TSignal>> Transitions { get; }
 
-        new IReadOnlyDictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> OrthogonalMachines { get; }
+        new IReadOnlyDictionary<int, Orthogonal<TState, TTransition, TSignal>> Orthogonals { get; }
     }
 }

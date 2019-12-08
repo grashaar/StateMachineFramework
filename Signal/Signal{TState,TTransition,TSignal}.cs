@@ -4,7 +4,8 @@ using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
-    public sealed partial class Signal<TState, TTransition, TSignal> : Signal<TSignal>, ISignal<TState, TTransition, TSignal>
+    public sealed partial class Signal<TState, TTransition, TSignal>
+        : Signal<TSignal>, ISignal<TState, TTransition, TSignal>
     {
         public StateMachine<TState, TTransition, TSignal> Machine
             => this.MachineI;

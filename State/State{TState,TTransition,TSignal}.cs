@@ -4,7 +4,8 @@ using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
-    public sealed partial class State<TState, TTransition, TSignal> : State<TState>, IState<TState, TTransition, TSignal>
+    public sealed partial class State<TState, TTransition, TSignal>
+        : State<TState>, IState<TState, TTransition, TSignal>
     {
         public State<TState, TTransition, TSignal> ParentState { get; internal set; }
 
@@ -17,7 +18,7 @@ namespace StateMachineFramework
         public override IReadOnlyList<IStateAction> Actions
             => this.actions;
 
-        public IReadOnlyDictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> OrthogonalMachines
+        public IReadOnlyDictionary<int, Orthogonal<TState, TTransition, TSignal>> OrthogonalMachines
             => this.OrthogonalMachinesI;
 
         /// <summary>
@@ -33,20 +34,18 @@ namespace StateMachineFramework
         /// <summary>
         /// Internal <see cref="OrthogonalMachines"/>
         /// </summary>
-        internal Dictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> OrthogonalMachinesI { get; }
+        internal Dictionary<int, Orthogonal<TState, TTransition, TSignal>> OrthogonalMachinesI { get; }
 
-        private readonly List<OrthogonalStateMachine<TState, TTransition, TSignal>> orthogonalMachinesUpdate;
         private readonly StateActionList actions;
 
         internal State(TState name) : base(name)
         {
             this.TransitionsI = new Dictionary<Transition<TState, TTransition, TSignal>, State<TState, TTransition, TSignal>>();
 
-            this.OrthogonalMachinesI = new Dictionary<int, OrthogonalStateMachine<TState, TTransition, TSignal>> {
-                { 0, new OrthogonalStateMachine<TState, TTransition, TSignal>(this, 0) }
+            this.OrthogonalMachinesI = new Dictionary<int, Orthogonal<TState, TTransition, TSignal>> {
+                { 0, new Orthogonal<TState, TTransition, TSignal>(this, 0) }
             };
 
-            this.orthogonalMachinesUpdate = new List<OrthogonalStateMachine<TState, TTransition, TSignal>>();
             this.actions = new StateActionList();
         }
 
@@ -95,7 +94,6 @@ namespace StateMachineFramework
                 }
             }
 
-            this.HasInnerState = true;
             innerState.HasParentState = true;
             innerState.ParentState = this;
             return this.OrthogonalMachinesI[index].Machine.AddState(innerState);
@@ -103,7 +101,7 @@ namespace StateMachineFramework
 
         internal bool SetInitialInnerState(State<TState, TTransition, TSignal> innerState, int index = 0)
         {
-            if (!this.HasInnerState)
+            if (this.OrthogonalMachinesI.Count <= 0)
             {
                 return false;
             }
@@ -138,7 +136,7 @@ namespace StateMachineFramework
         {
             if (this.OrthogonalMachinesI.Count == index)
             {
-                this.OrthogonalMachinesI.Add(index, new OrthogonalStateMachine<TState, TTransition, TSignal>(this, index));
+                this.OrthogonalMachinesI.Add(index, new Orthogonal<TState, TTransition, TSignal>(this, index));
                 return true;
             }
 
@@ -150,12 +148,9 @@ namespace StateMachineFramework
             this.IsCurrentState = true;
             this.actions.Enter();
 
-            if (this.HasInnerState)
+            foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
-                foreach (var orthogonal in this.OrthogonalMachinesI.Values)
-                {
-                    orthogonal.Machine.Initialize();
-                }
+                orthogonal.Machine.Initialize();
             }
         }
 
@@ -164,23 +159,17 @@ namespace StateMachineFramework
             this.IsCurrentState = false;
             this.actions.Exit();
 
-            if (this.HasInnerState)
+            foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
-                foreach (var orthogonal in this.OrthogonalMachinesI.Values)
-                {
-                    orthogonal.Machine.Terminate();
-                }
+                orthogonal.Machine.Terminate();
             }
         }
 
         internal void Terminate()
         {
-            if (this.HasInnerState)
+            foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
-                foreach (var orthogonal in this.OrthogonalMachinesI.Values)
-                {
-                    orthogonal.Machine.Terminate();
-                }
+                orthogonal.Machine.Terminate();
             }
 
             this.actions.Terminate();
@@ -191,23 +180,14 @@ namespace StateMachineFramework
         {
             this.actions.Update();
 
-            if (this.HasInnerState)
+            foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
-                this.orthogonalMachinesUpdate.Clear();
-                this.orthogonalMachinesUpdate.AddRange(this.OrthogonalMachinesI.Values);
-
-                foreach (var orthogonal in this.orthogonalMachinesUpdate)
-                {
-                    orthogonal.Machine.Tick();
-                }
+                orthogonal.Machine.Tick();
             }
         }
 
         internal void PassSignal(Signal<TState, TTransition, TSignal> signal)
         {
-            if (!this.HasInnerState)
-                return;
-
             foreach (var orthogonal in this.OrthogonalMachinesI.Values)
             {
                 orthogonal.Machine.ProcessSignal(signal);
@@ -228,7 +208,7 @@ namespace StateMachineFramework
             => this.TransitionsI.Keys.ToList();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override IReadOnlyDictionary<int, IOrthogonalStateMachine> GetOrthogonalMachines()
-            => this.OrthogonalMachinesI.ToDictionary(x => x.Key, x => x.Value as IOrthogonalStateMachine);
+        protected override IReadOnlyDictionary<int, IOrthogonal> GetOrthogonalMachines()
+            => this.OrthogonalMachinesI.ToDictionary(x => x.Key, x => x.Value as IOrthogonal);
     }
 }

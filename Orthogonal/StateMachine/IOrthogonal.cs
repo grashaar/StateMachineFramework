@@ -1,11 +1,11 @@
 ﻿namespace StateMachineFramework
 {
-    public interface IOrthogonalStateMachine
+    public interface IOrthogonal
     {
         int Index { get; }
     }
 
-    public interface IOrthogonalStateMachine<TState, TTransition, TSignal> : IOrthogonalStateMachine
+    public interface IOrthogonal<TState, TTransition, TSignal> : IOrthogonal
     {
         StateMachine<TState, TTransition, TSignal> Machine { get; }
 

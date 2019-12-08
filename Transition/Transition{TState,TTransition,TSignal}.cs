@@ -3,7 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
-    public sealed partial class Transition<TState, TTransition, TSignal> : Transition<TTransition>, ITransition<TState, TTransition, TSignal>
+    public sealed partial class Transition<TState, TTransition, TSignal>
+        : Transition<TTransition>, ITransition<TState, TTransition, TSignal>
     {
         private enum Status
         {

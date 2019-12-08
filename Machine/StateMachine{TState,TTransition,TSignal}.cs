@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace StateMachineFramework
 {
-    public partial class StateMachine<TState, TTransition, TSignal> : IStateMachine<TState, TTransition, TSignal>
+    public partial class StateMachine<TState, TTransition, TSignal>
+        : IStateMachine<TState, TTransition, TSignal>
     {
         public bool Initialized { get; private set; }
 

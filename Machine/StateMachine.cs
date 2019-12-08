@@ -1,4 +1,4 @@
 ﻿namespace StateMachineFramework
 {
-    public class StateMachine : StateMachine<string, string, string> { }
+    public sealed class StateMachine : StateMachine<string, string, string> { }
 }

@@ -5,12 +5,12 @@ namespace StateMachineFramework
 {
     public readonly partial struct OrthogonalState<TState, TTransition, TSignal>
     {
-        public OrthogonalStateMachine<TState, TTransition, TSignal> End()
+        public Orthogonal<TState, TTransition, TSignal> End(TState stateName)
         {
             return this.Machine;
         }
 
-        public OrthogonalMachine<TState, TTransition, TSignal> End(int orthogonalIndex)
+        public OrthogonalMachine<TState, TTransition, TSignal> End()
         {
             return new OrthogonalMachine<TState, TTransition, TSignal>(
                 new OrthogonalState<TState, TTransition, TSignal>(this.Parent.Machine, this.Parent.State), this.Machine);
@@ -19,7 +19,7 @@ namespace StateMachineFramework
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public OrthogonalMachine<TState, TTransition, TSignal> BeginOrthogonal(int orthogonalIndex)
         {
-            return new OrthogonalMachine<TState, TTransition, TSignal>(this, this.State.OrthogonalMachinesI[orthogonalIndex]);
+            return new OrthogonalMachine<TState, TTransition, TSignal>(this, this.State.OrthogonalsI[orthogonalIndex]);
         }
 
         public OrthogonalState<TState, TTransition, TSignal> Action(IStateAction action)

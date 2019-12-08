@@ -1,6 +1,7 @@
 ﻿namespace StateMachineFramework
 {
-    public sealed partial class OrthogonalStateMachine<TState, TTransition, TSignal> : IOrthogonalStateMachine<TState, TTransition, TSignal>
+    public sealed partial class Orthogonal<TState, TTransition, TSignal>
+        : IOrthogonal<TState, TTransition, TSignal>
     {
         public int Index { get; }
 
@@ -11,7 +12,7 @@
         public State<TState, TTransition, TSignal> CurrentState
             => this.Machine.CurrentStateI;
 
-        internal OrthogonalStateMachine(State<TState, TTransition, TSignal> state, int index)
+        internal Orthogonal(State<TState, TTransition, TSignal> state, int index)
         {
             this.Index = index;
             this.OfState = state;
