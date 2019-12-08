@@ -10,6 +10,16 @@ namespace StateMachineFramework
             return this.Machine;
         }
 
+        public Orthogonal<TState, TTransition, TSignal> End(IState state)
+        {
+            return this.Machine;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> End(IState<TState> state)
+        {
+            return this.Machine;
+        }
+
         public OrthogonalMachine<TState, TTransition, TSignal> End()
         {
             return new OrthogonalMachine<TState, TTransition, TSignal>(

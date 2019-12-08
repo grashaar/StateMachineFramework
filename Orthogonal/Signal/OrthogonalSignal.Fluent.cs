@@ -4,12 +4,22 @@ namespace StateMachineFramework
 {
     public readonly partial struct OrthogonalSignal<TState, TTransition, TSignal>
     {
-        public Orthogonal<TState, TTransition, TSignal> End()
+        public Orthogonal<TState, TTransition, TSignal> End(TSignal signalName)
         {
             return this.Machine;
         }
 
-        public OrthogonalMachine<TState, TTransition, TSignal> End(int orthogonalIndex)
+        public Orthogonal<TState, TTransition, TSignal> End(ISignal signal)
+        {
+            return this.Machine;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> End(ISignal<TSignal> signal)
+        {
+            return this.Machine;
+        }
+
+        public OrthogonalMachine<TState, TTransition, TSignal> End()
         {
             return new OrthogonalMachine<TState, TTransition, TSignal>(
                 new OrthogonalState<TState, TTransition, TSignal>(this.Parent.Machine, this.Parent.State), this.Machine);
