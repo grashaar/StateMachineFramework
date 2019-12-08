@@ -82,7 +82,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> State(
-            TState innerStateName, TState stateName, out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
+            TState innerStateName, TState stateName,
+            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
         {
             innerState = CreateState(innerStateName, stateName, orthogonalIndex);
             return this;
@@ -99,7 +100,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> State(
-            TState innerStateName, TState stateName, out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
+            TState innerStateName, TState stateName,
+            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
             innerState = CreateState(innerStateName, stateName, orthogonalIndex);
@@ -109,7 +111,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> State(
-            TState innerStateName, State<TState, TTransition, TSignal> state, out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
+            TState innerStateName, State<TState, TTransition, TSignal> state,
+            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
         {
             innerState = CreateState(innerStateName, state, orthogonalIndex);
             return this;
@@ -126,7 +129,9 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> State(
-            TState innerStateName, State<TState, TTransition, TSignal> state, out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0, Action<State<TState, TTransition, TSignal>> callback = null)
+            TState innerStateName, State<TState, TTransition, TSignal> state,
+            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
+            Action<State<TState, TTransition, TSignal>> callback = null)
         {
             innerState = CreateState(innerStateName, state, orthogonalIndex);
             callback?.Invoke(innerState);
@@ -135,7 +140,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, TState startStateName, TState endStateName, out Transition<TState, TTransition, TSignal> transition)
+            TTransition transitionName, TState startStateName, TState endStateName,
+            out Transition<TState, TTransition, TSignal> transition)
         {
             transition = CreateTransition(transitionName, startStateName, endStateName);
             return this;
@@ -152,7 +158,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, TState startStateName, TState endStateName, out Transition<TState, TTransition, TSignal> transition,
+            TTransition transitionName, TState startStateName, TState endStateName,
+            out Transition<TState, TTransition, TSignal> transition,
             Action<Transition<TState, TTransition, TSignal>> callback)
         {
             transition = CreateTransition(transitionName, startStateName, endStateName);
@@ -162,7 +169,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState,
+            TTransition transitionName, State<TState, TTransition, TSignal> startState,
+            State<TState, TTransition, TSignal> endState,
             out Transition<TState, TTransition, TSignal> transition)
         {
             transition = CreateTransition(transitionName, startState, endState);
@@ -170,7 +178,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState,
+            TTransition transitionName, State<TState, TTransition, TSignal> startState,
+            State<TState, TTransition, TSignal> endState,
             Action<Transition<TState, TTransition, TSignal>> callback)
         {
             var transition = CreateTransition(transitionName, startState, endState);
@@ -180,8 +189,9 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Transition(
-            TTransition transitionName, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState,
-            out Transition<TState, TTransition, TSignal> transition, Action<Transition<TState, TTransition, TSignal>> callback)
+            TTransition transitionName, State<TState, TTransition, TSignal> startState,
+            State<TState, TTransition, TSignal> endState, out Transition<TState, TTransition, TSignal> transition,
+            Action<Transition<TState, TTransition, TSignal>> callback)
         {
             transition = CreateTransition(transitionName, startState, endState);
             callback?.Invoke(transition);
@@ -206,7 +216,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Signal(
-            TSignal signalName, TTransition transitionName, out Signal<TState, TTransition, TSignal> signal,
+            TSignal signalName, TTransition transitionName,
+            out Signal<TState, TTransition, TSignal> signal,
             Action<Signal<TState, TTransition, TSignal>> callback)
         {
             ConnectSignal(signalName, transitionName, out signal);
@@ -216,7 +227,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Signal(
-            TSignal signalName, Transition<TState, TTransition, TSignal> transition, out Signal<TState, TTransition, TSignal> signal)
+            TSignal signalName, Transition<TState, TTransition, TSignal> transition,
+            out Signal<TState, TTransition, TSignal> signal)
         {
             ConnectSignal(signalName, transition, out signal);
             return this;
@@ -233,7 +245,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Signal(
-            TSignal signalName, Transition<TState, TTransition, TSignal> transition, out Signal<TState, TTransition, TSignal> signal,
+            TSignal signalName, Transition<TState, TTransition, TSignal> transition,
+            out Signal<TState, TTransition, TSignal> signal,
             Action<Signal<TState, TTransition, TSignal>> callback)
         {
             ConnectSignal(signalName, transition, out signal);
@@ -299,7 +312,8 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> Initial(
-            State<TState, TTransition, TSignal> innerState, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
+            State<TState, TTransition, TSignal> innerState,
+            State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
         {
             SetInitialState(innerState, state, orthogonalIndex);
             return this;
@@ -320,42 +334,48 @@ namespace StateMachineFramework
         }
 
         public StateMachine<TState, TTransition, TSignal> EmitCondition(
-            Signal<TState, TTransition, TSignal> signal, params State<TState, TTransition, TSignal>[] conditionalStates)
+            Signal<TState, TTransition, TSignal> signal,
+            params State<TState, TTransition, TSignal>[] conditionalStates)
         {
             CreateEmitCondition(signal, conditionalStates);
             return this;
         }
 
         public StateMachine<TState, TTransition, TSignal> TransitionCondition(
-            TSignal signalName, TTransition transitionName, params TState[] conditionalStateNames)
+            TSignal signalName, TTransition transitionName,
+            params TState[] conditionalStateNames)
         {
             CreateTransitionCondition(signalName, transitionName, conditionalStateNames);
             return this;
         }
 
         public StateMachine<TState, TTransition, TSignal> TransitionCondition(
-            Signal<TState, TTransition, TSignal> signal, TTransition transitionName, params TState[] conditionalStateNames)
+            Signal<TState, TTransition, TSignal> signal, TTransition transitionName,
+            params TState[] conditionalStateNames)
         {
             CreateTransitionCondition(signal, transitionName, conditionalStateNames);
             return this;
         }
 
         public StateMachine<TState, TTransition, TSignal> TransitionCondition(
-            Signal<TState, TTransition, TSignal> signal, TTransition transitionName, params State<TState, TTransition, TSignal>[] conditionalStates)
+            Signal<TState, TTransition, TSignal> signal, TTransition transitionName,
+            params State<TState, TTransition, TSignal>[] conditionalStates)
         {
             CreateTransitionCondition(signal, transitionName, conditionalStates);
             return this;
         }
 
         public StateMachine<TState, TTransition, TSignal> TransitionCondition(
-            Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition, params TState[] conditionalStateNames)
+            Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition,
+            params TState[] conditionalStateNames)
         {
             CreateTransitionCondition(signal, transition, conditionalStateNames);
             return this;
         }
 
         public StateMachine<TState, TTransition, TSignal> TransitionCondition(
-            Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition, params State<TState, TTransition, TSignal>[] conditionalStates)
+            Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition,
+            params State<TState, TTransition, TSignal>[] conditionalStates)
         {
             CreateTransitionCondition(signal, transition, conditionalStates);
             return this;

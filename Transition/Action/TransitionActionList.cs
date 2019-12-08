@@ -14,7 +14,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Invoke(args);
+                this[i].Invoke(args);
             }
         }
 
@@ -22,7 +22,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Start(args);
+                this[i].Start(args);
             }
         }
 
@@ -30,7 +30,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Finish();
+                this[i].Finish();
             }
         }
     }

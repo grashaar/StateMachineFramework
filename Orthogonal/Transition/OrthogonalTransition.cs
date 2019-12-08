@@ -8,7 +8,9 @@
 
         public OrthogonalState<TState, TTransition, TSignal> Parent { get; }
 
-        public OrthogonalTransition(Orthogonal<TState, TTransition, TSignal> machine, Transition<TState, TTransition, TSignal> transition, in OrthogonalState<TState, TTransition, TSignal> parent = default)
+        public OrthogonalTransition(Orthogonal<TState, TTransition, TSignal> machine,
+            Transition<TState, TTransition, TSignal> transition,
+            in OrthogonalState<TState, TTransition, TSignal> parent = default)
         {
             this.Machine = machine;
             this.Transition = transition;

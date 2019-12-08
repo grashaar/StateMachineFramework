@@ -16,9 +16,6 @@ namespace StateMachineFramework
 
             for (var i = 0; i < this.Count; i++)
             {
-                if (this[i] == null)
-                    continue;
-
                 result &= this[i].Validate();
             }
 

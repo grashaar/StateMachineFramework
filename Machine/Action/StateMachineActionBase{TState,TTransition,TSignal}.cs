@@ -1,6 +1,7 @@
 ﻿namespace StateMachineFramework
 {
-    public class StateMachineActionBase<TState, TTransition, TSignal> : StateMachineActionBase<TState>, IStateMachineAction<TState, TTransition, TSignal>
+    public class StateMachineActionBase<TState, TTransition, TSignal>
+        : StateMachineActionBase<TState>, IStateMachineAction<TState, TTransition, TSignal>
     {
         public new StateMachine<TState, TTransition, TSignal> Machine
         {

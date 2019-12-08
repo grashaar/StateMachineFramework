@@ -14,7 +14,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Initialize();
+                this[i].Initialize();
             }
         }
 
@@ -33,7 +33,7 @@ namespace StateMachineFramework
                         break;
 
                     default:
-                        this[i]?.StateChange(priorState, formerState);
+                        this[i].StateChange(priorState, formerState);
                         break;
                 }
             }
@@ -43,7 +43,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Terminate();
+                this[i].Terminate();
             }
         }
     }

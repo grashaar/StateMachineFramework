@@ -49,7 +49,8 @@ namespace StateMachineFramework
             this.MachineI = machine;
             this.SignalToI = new List<Transition<TState, TTransition, TSignal>>();
             this.EmitConditionsI = new List<SignalCondition<TState, TTransition, TSignal>>();
-            this.TransitionConditionsI = new Dictionary<SignalCondition<TState, TTransition, TSignal>, Transition<TState, TTransition, TSignal>>();
+            this.TransitionConditionsI = new Dictionary<SignalCondition<TState, TTransition, TSignal>,
+                                                        Transition<TState, TTransition, TSignal>>();
             this.actions = new SignalActionList();
         }
 

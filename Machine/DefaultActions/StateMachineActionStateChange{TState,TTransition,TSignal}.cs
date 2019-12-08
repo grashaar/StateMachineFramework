@@ -2,7 +2,8 @@
 
 namespace StateMachineFramework
 {
-    internal sealed class StateMachineActionStateChange<TState, TTransition, TSignal> : StateMachineActionBase<TState, TTransition, TSignal>
+    internal sealed class StateMachineActionStateChange<TState, TTransition, TSignal>
+        : StateMachineActionBase<TState, TTransition, TSignal>
     {
         private readonly static string DefaultName = $"StateChange<{typeof(TState).Name}, {typeof(TTransition).Name}, {typeof(TSignal).Name}>";
 

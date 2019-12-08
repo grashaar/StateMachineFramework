@@ -36,7 +36,8 @@
                 this.machine = machine ?? throw new System.ArgumentNullException(nameof(machine));
             }
 
-            public void FireOnStateChanged(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
+            public void FireOnStateChanged(State<TState, TTransition, TSignal> priorState,
+                                           State<TState, TTransition, TSignal> formerState)
                 => this.machine.FireOnStateChanged(priorState, formerState);
         }
     }

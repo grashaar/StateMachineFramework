@@ -14,7 +14,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Emit();
+                this[i].Emit();
             }
         }
 
@@ -22,7 +22,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.Process();
+                this[i].Process();
             }
         }
 
@@ -30,7 +30,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i]?.NotProcess(args);
+                this[i].NotProcess(args);
             }
         }
     }
