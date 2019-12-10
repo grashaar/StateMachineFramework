@@ -552,7 +552,7 @@ namespace StateMachineFramework
         public void Terminate()
         {
             this.Initialized = false;
-            this.CurrentStateI.Terminate();
+            this.CurrentStateI?.Terminate();
             this.CurrentStateI = null;
             this.actions.Terminate();
         }
