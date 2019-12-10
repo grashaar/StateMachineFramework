@@ -559,8 +559,8 @@ namespace StateMachineFramework
 
         public void Tick()
         {
-            this.CurrentStateI.Update();
-            this.CurrentTransitionI.Update();
+            this.CurrentStateI?.Update();
+            this.CurrentTransitionI?.Update();
         }
 
         public void EmitSignal(object signalName)
