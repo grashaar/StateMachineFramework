@@ -10,11 +10,11 @@ namespace StateMachineFramework
 
         new Transition<TState, TTransition, TSignal> CurrentTransition { get; }
 
-        new IReadOnlyList<State<TState, TTransition, TSignal>> States { get; }
+        IReadOnlyDictionary<TState, State<TState, TTransition, TSignal>> StateMap { get; }
 
-        new IReadOnlyList<Signal<TState, TTransition, TSignal>> Signals { get; }
+        IReadOnlyDictionary<TSignal, Signal<TState, TTransition, TSignal>> SignalMap { get; }
 
-        new IReadOnlyList<Transition<TState, TTransition, TSignal>> Transitions { get; }
+        IReadOnlyDictionary<TTransition, Transition<TState, TTransition, TSignal>> TransitionMap { get; }
 
         bool ConnectSignal(Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition);
 

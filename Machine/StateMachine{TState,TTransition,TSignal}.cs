@@ -17,14 +17,23 @@ namespace StateMachineFramework
         public Transition<TState, TTransition, TSignal> CurrentTransition
             => this.CurrentTransitionI;
 
+        public IReadOnlyDictionary<TState, State<TState, TTransition, TSignal>> StateMap
+            => this.StateMapI;
+
+        public IReadOnlyDictionary<TSignal, Signal<TState, TTransition, TSignal>> SignalMap
+            => this.SignalMapI;
+
+        public IReadOnlyDictionary<TTransition, Transition<TState, TTransition, TSignal>> TransitionMap
+            => this.TransitionMapI;
+
         public IReadOnlyList<State<TState, TTransition, TSignal>> States
-            => this.StatesI.Values.ToList();
+            => this.StateMapI.Values.ToList();
 
         public IReadOnlyList<Signal<TState, TTransition, TSignal>> Signals
-            => this.SignalsI.Values.ToList();
+            => this.SignalMapI.Values.ToList();
 
         public IReadOnlyList<Transition<TState, TTransition, TSignal>> Transitions
-            => this.TransitionsI.Values.ToList();
+            => this.TransitionMapI.Values.ToList();
 
         public IReadOnlyList<IStateMachineAction> Actions
             => this.actions;
@@ -39,13 +48,13 @@ namespace StateMachineFramework
             => this.CurrentTransitionI;
 
         IReadOnlyList<IState> IStateMachine.States
-            => this.StatesI.Values.ToList();
+            => this.States;
 
         IReadOnlyList<ISignal> IStateMachine.Signals
-            => this.SignalsI.Values.ToList();
+            => this.Signals;
 
         IReadOnlyList<ITransition> IStateMachine.Transitions
-            => this.TransitionsI.Values.ToList();
+            => this.Transitions;
 
         /// <summary>
         /// Internal <see cref="InitialState"/>
@@ -63,40 +72,40 @@ namespace StateMachineFramework
         internal Transition<TState, TTransition, TSignal> CurrentTransitionI { get; private set; }
 
         /// <summary>
-        /// Internal <see cref="States"/>
+        /// Internal <see cref="StateMap"/>
         /// </summary>
-        internal Dictionary<TState, State<TState, TTransition, TSignal>> StatesI { get; }
+        internal Dictionary<TState, State<TState, TTransition, TSignal>> StateMapI { get; }
 
         /// <summary>
-        /// Internal <see cref="Signals"/>
+        /// Internal <see cref="SignalMap"/>
         /// </summary>
-        internal Dictionary<TSignal, Signal<TState, TTransition, TSignal>> SignalsI { get; }
+        internal Dictionary<TSignal, Signal<TState, TTransition, TSignal>> SignalMapI { get; }
 
         /// <summary>
-        /// Internal <see cref="Transitions"/>
+        /// Internal <see cref="TransitionMap"/>
         /// </summary>
-        internal Dictionary<TTransition, Transition<TState, TTransition, TSignal>> TransitionsI { get; }
+        internal Dictionary<TTransition, Transition<TState, TTransition, TSignal>> TransitionMapI { get; }
 
         private readonly StateMachineActionList actions;
 
         public StateMachine()
         {
-            this.StatesI = new Dictionary<TState, State<TState, TTransition, TSignal>>();
-            this.SignalsI = new Dictionary<TSignal, Signal<TState, TTransition, TSignal>>();
-            this.TransitionsI = new Dictionary<TTransition, Transition<TState, TTransition, TSignal>>();
+            this.StateMapI = new Dictionary<TState, State<TState, TTransition, TSignal>>();
+            this.SignalMapI = new Dictionary<TSignal, Signal<TState, TTransition, TSignal>>();
+            this.TransitionMapI = new Dictionary<TTransition, Transition<TState, TTransition, TSignal>>();
             this.actions = new StateMachineActionList();
         }
 
         #region State Creation
         internal bool AddState(State<TState, TTransition, TSignal> state)
         {
-            if (state == null || this.StatesI.ContainsKey(state.Name))
+            if (state == null || this.StateMapI.ContainsKey(state.Name))
             {
                 return false;
             }
 
             state.SetStateMachine(this);
-            this.StatesI.Add(state.Name, state);
+            this.StateMapI.Add(state.Name, state);
             return true;
         }
 
@@ -109,14 +118,14 @@ namespace StateMachineFramework
 
         public State<TState, TTransition, TSignal> CreateState(TState innerStateName, TState stateName, int orthogonalIndex = 0)
         {
-            var state = this.StatesI[stateName];
+            var state = this.StateMapI[stateName];
             return CreateState(innerStateName, state, orthogonalIndex);
         }
 
         public State<TState, TTransition, TSignal> CreateState(TState innerStateName, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
         {
             var innerState = new State<TState, TTransition, TSignal>(innerStateName);
-            this.StatesI.Add(innerStateName, innerState);
+            this.StateMapI.Add(innerStateName, innerState);
 
             state.AddInnerState(innerState, orthogonalIndex);
 
@@ -125,7 +134,7 @@ namespace StateMachineFramework
 
         public bool TryCreateState(TState stateName, out State<TState, TTransition, TSignal> state)
         {
-            if (this.StatesI.ContainsKey(stateName))
+            if (this.StateMapI.ContainsKey(stateName))
             {
                 state = null;
                 return false;
@@ -137,13 +146,13 @@ namespace StateMachineFramework
 
         public bool TryCreateState(TState innerStateName, TState stateName, out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
         {
-            if (!this.StatesI.ContainsKey(stateName) || this.StatesI.ContainsKey(innerStateName))
+            if (!this.StateMapI.ContainsKey(stateName) || this.StateMapI.ContainsKey(innerStateName))
             {
                 innerState = null;
                 return false;
             }
 
-            var state = this.StatesI[stateName];
+            var state = this.StateMapI[stateName];
             return TryCreateState(innerStateName, state, out innerState, orthogonalIndex);
         }
 
@@ -163,8 +172,8 @@ namespace StateMachineFramework
         #region Transition Creation
         public Transition<TState, TTransition, TSignal> CreateTransition(TTransition transitionName, TState startStateName, TState endStateName)
         {
-            var startState = this.StatesI[startStateName];
-            var endState = this.StatesI[endStateName];
+            var startState = this.StateMapI[startStateName];
+            var endState = this.StateMapI[endStateName];
 
             if (startState.MachineI != endState.MachineI)
             {
@@ -187,7 +196,7 @@ namespace StateMachineFramework
             }
 
             var transition = new Transition<TState, TTransition, TSignal>(this, transitionName, startState, endState);
-            this.TransitionsI.Add(transitionName, transition);
+            this.TransitionMapI.Add(transitionName, transition);
             startState.AddTransition(transition, endState);
 
             return transition;
@@ -195,20 +204,20 @@ namespace StateMachineFramework
 
         public bool TryCreateTransition(TTransition transitionName, TState startStateName, TState endStateName, out Transition<TState, TTransition, TSignal> transition)
         {
-            if (this.TransitionsI.ContainsKey(transitionName) || !this.StatesI.ContainsKey(startStateName) || !this.StatesI.ContainsKey(endStateName))
+            if (this.TransitionMapI.ContainsKey(transitionName) || !this.StateMapI.ContainsKey(startStateName) || !this.StateMapI.ContainsKey(endStateName))
             {
                 transition = null;
                 return false;
             }
 
-            var startState = this.StatesI[startStateName];
-            var endState = this.StatesI[endStateName];
+            var startState = this.StateMapI[startStateName];
+            var endState = this.StateMapI[endStateName];
             return TryCreateTransition(transitionName, startState, endState, out transition);
         }
 
         public bool TryCreateTransition(TTransition transitionName, State<TState, TTransition, TSignal> startState, State<TState, TTransition, TSignal> endState, out Transition<TState, TTransition, TSignal> transition)
         {
-            if (startState == null || endState == null || this.TransitionsI.ContainsKey(transitionName))
+            if (startState == null || endState == null || this.TransitionMapI.ContainsKey(transitionName))
             {
                 transition = null;
                 return false;
@@ -227,24 +236,24 @@ namespace StateMachineFramework
         #region Signal Creation And Connection
         public bool ConnectSignal(TSignal signalName, TTransition transitionName)
         {
-            if (!this.TransitionsI.ContainsKey(transitionName))
+            if (!this.TransitionMapI.ContainsKey(transitionName))
             {
                 return false;
             }
 
-            var transition = this.TransitionsI[transitionName];
+            var transition = this.TransitionMapI[transitionName];
             return ConnectSignal(signalName, transition);
         }
 
         public bool ConnectSignal(TSignal signalName, TTransition transitionName, out Signal<TState, TTransition, TSignal> signal)
         {
-            if (!this.TransitionsI.ContainsKey(transitionName))
+            if (!this.TransitionMapI.ContainsKey(transitionName))
             {
                 signal = null;
                 return false;
             }
 
-            var transition = this.TransitionsI[transitionName];
+            var transition = this.TransitionMapI[transitionName];
             return ConnectSignal(signalName, transition, out signal);
         }
 
@@ -255,13 +264,13 @@ namespace StateMachineFramework
                 return false;
             }
 
-            if (!this.SignalsI.ContainsKey(signalName))
+            if (!this.SignalMapI.ContainsKey(signalName))
             {
                 CreateSignal(signalName, transition);
                 return true;
             }
 
-            var signal = this.SignalsI[signalName];
+            var signal = this.SignalMapI[signalName];
 
             return ConnectSignal(signal, transition);
         }
@@ -274,14 +283,14 @@ namespace StateMachineFramework
                 return false;
             }
 
-            if (!this.SignalsI.ContainsKey(signalName))
+            if (!this.SignalMapI.ContainsKey(signalName))
             {
                 signal = CreateSignal(signalName, transition);
                 return true;
             }
             else
             {
-                signal = this.SignalsI[signalName];
+                signal = this.SignalMapI[signalName];
             }
 
             return ConnectSignal(signal, transition);
@@ -289,12 +298,12 @@ namespace StateMachineFramework
 
         public bool ConnectSignal(Signal<TState, TTransition, TSignal> signal, TTransition transitionName)
         {
-            if (signal == null || !this.TransitionsI.ContainsKey(transitionName))
+            if (signal == null || !this.TransitionMapI.ContainsKey(transitionName))
             {
                 return false;
             }
 
-            var transition = this.TransitionsI[transitionName];
+            var transition = this.TransitionMapI[transitionName];
             return ConnectSignal(signal, transition);
         }
 
@@ -318,7 +327,7 @@ namespace StateMachineFramework
             var signal = new Signal<TState, TTransition, TSignal>(this, signalName);
             signal.AddTransition(transition);
             transition.AddSignal(signal);
-            this.SignalsI.Add(signal.Name, signal);
+            this.SignalMapI.Add(signal.Name, signal);
 
             return signal;
         }
@@ -327,12 +336,12 @@ namespace StateMachineFramework
         #region Set Initial State
         public bool SetInitialState(TState stateName)
         {
-            if (!this.StatesI.ContainsKey(stateName))
+            if (!this.StateMapI.ContainsKey(stateName))
             {
                 return false;
             }
 
-            var state = this.StatesI[stateName];
+            var state = this.StateMapI[stateName];
             return SetInitialState(state);
         }
 
@@ -349,23 +358,23 @@ namespace StateMachineFramework
 
         public bool SetInitialState(TState innerStateName, TState stateName, int orthogonalIndex = 0)
         {
-            if (!this.StatesI.ContainsKey(stateName))
+            if (!this.StateMapI.ContainsKey(stateName))
             {
                 return false;
             }
 
-            var state = this.StatesI[stateName];
+            var state = this.StateMapI[stateName];
             return SetInitialState(innerStateName, state, orthogonalIndex);
         }
 
         public bool SetInitialState(TState innerStateName, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0)
         {
-            if (!this.StatesI.ContainsKey(innerStateName))
+            if (!this.StateMapI.ContainsKey(innerStateName))
             {
                 return false;
             }
 
-            var innerState = this.StatesI[innerStateName];
+            var innerState = this.StateMapI[innerStateName];
             return SetInitialState(innerState, state, orthogonalIndex);
         }
 
@@ -385,18 +394,18 @@ namespace StateMachineFramework
         #region Create Condition
         public bool CreateEmitCondition(TSignal signalName, params TState[] conditionalStateNames)
         {
-            if (!this.SignalsI.ContainsKey(signalName))
+            if (!this.SignalMapI.ContainsKey(signalName))
             {
                 return false;
             }
 
-            var signal = this.SignalsI[signalName];
+            var signal = this.SignalMapI[signalName];
             return CreateEmitCondition(signal, conditionalStateNames);
         }
 
         public bool CreateEmitCondition(Signal<TState, TTransition, TSignal> signal, params TState[] conditionalStateNames)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name))
             {
                 return false;
             }
@@ -404,12 +413,12 @@ namespace StateMachineFramework
             var conditionalStates = new State<TState, TTransition, TSignal>[conditionalStateNames.Length];
             for (var i = 0; i < conditionalStateNames.Length; i++)
             {
-                if (!this.StatesI.ContainsKey(conditionalStateNames[i]))
+                if (!this.StateMapI.ContainsKey(conditionalStateNames[i]))
                 {
                     return false;
                 }
 
-                conditionalStates[i] = this.StatesI[conditionalStateNames[i]];
+                conditionalStates[i] = this.StateMapI[conditionalStateNames[i]];
             }
 
             return CreateEmitCondition(signal, conditionalStates);
@@ -417,14 +426,14 @@ namespace StateMachineFramework
 
         public bool CreateEmitCondition(Signal<TState, TTransition, TSignal> signal, params State<TState, TTransition, TSignal>[] conditionalStates)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name))
             {
                 return false;
             }
 
             foreach (var conditionalState in conditionalStates)
             {
-                if (conditionalState == null || !this.StatesI.ContainsKey(conditionalState.Name))
+                if (conditionalState == null || !this.StateMapI.ContainsKey(conditionalState.Name))
                 {
                     return false;
                 }
@@ -438,45 +447,45 @@ namespace StateMachineFramework
 
         public bool CreateTransitionCondition(TSignal signalName, TTransition transitionName, params TState[] conditionalStateNames)
         {
-            if (!this.SignalsI.ContainsKey(signalName) ||
-                !this.TransitionsI.ContainsKey(transitionName))
+            if (!this.SignalMapI.ContainsKey(signalName) ||
+                !this.TransitionMapI.ContainsKey(transitionName))
             {
                 return false;
             }
 
-            var signal = this.SignalsI[signalName];
-            var transition = this.TransitionsI[transitionName];
+            var signal = this.SignalMapI[signalName];
+            var transition = this.TransitionMapI[transitionName];
             return CreateTransitionCondition(signal, transition, conditionalStateNames);
         }
 
         public bool CreateTransitionCondition(Signal<TState, TTransition, TSignal> signal, TTransition transitionName, params TState[] conditionalStateNames)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name) ||
-                !this.TransitionsI.ContainsKey(transitionName))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name) ||
+                !this.TransitionMapI.ContainsKey(transitionName))
             {
                 return false;
             }
 
-            var transition = this.TransitionsI[transitionName];
+            var transition = this.TransitionMapI[transitionName];
             return CreateTransitionCondition(signal, transition, conditionalStateNames);
         }
 
         public bool CreateTransitionCondition(Signal<TState, TTransition, TSignal> signal, TTransition transitionName, params State<TState, TTransition, TSignal>[] conditionalStates)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name) ||
-                !this.TransitionsI.ContainsKey(transitionName))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name) ||
+                !this.TransitionMapI.ContainsKey(transitionName))
             {
                 return false;
             }
 
-            var transition = this.TransitionsI[transitionName];
+            var transition = this.TransitionMapI[transitionName];
             return CreateTransitionCondition(signal, transition, conditionalStates);
         }
 
         public bool CreateTransitionCondition(Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition, params TState[] conditionalStateNames)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name) ||
-                transition == null || !this.TransitionsI.ContainsKey(transition.Name))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name) ||
+                transition == null || !this.TransitionMapI.ContainsKey(transition.Name))
             {
                 return false;
             }
@@ -484,12 +493,12 @@ namespace StateMachineFramework
             var conditionalStates = new State<TState, TTransition, TSignal>[conditionalStateNames.Length];
             for (var i = 0; i < conditionalStateNames.Length; i++)
             {
-                if (!this.StatesI.ContainsKey(conditionalStateNames[i]))
+                if (!this.StateMapI.ContainsKey(conditionalStateNames[i]))
                 {
                     return false;
                 }
 
-                conditionalStates[i] = this.StatesI[conditionalStateNames[i]];
+                conditionalStates[i] = this.StateMapI[conditionalStateNames[i]];
             }
 
             return CreateTransitionCondition(signal, transition, conditionalStates);
@@ -497,15 +506,15 @@ namespace StateMachineFramework
 
         public bool CreateTransitionCondition(Signal<TState, TTransition, TSignal> signal, Transition<TState, TTransition, TSignal> transition, params State<TState, TTransition, TSignal>[] conditionalStates)
         {
-            if (signal == null || !this.SignalsI.ContainsKey(signal.Name) ||
-                transition == null || !this.TransitionsI.ContainsKey(transition.Name))
+            if (signal == null || !this.SignalMapI.ContainsKey(signal.Name) ||
+                transition == null || !this.TransitionMapI.ContainsKey(transition.Name))
             {
                 return false;
             }
 
             foreach (var conditionalState in conditionalStates)
             {
-                if (conditionalState == null || !this.StatesI.ContainsKey(conditionalState.Name))
+                if (conditionalState == null || !this.StateMapI.ContainsKey(conditionalState.Name))
                 {
                     return false;
                 }
@@ -573,47 +582,47 @@ namespace StateMachineFramework
 
         public void EmitSignal(TSignal signalName)
         {
-            if (!this.SignalsI.ContainsKey(signalName))
+            if (!this.SignalMapI.ContainsKey(signalName))
             {
                 return;
             }
 
-            this.SignalsI[signalName].Emit();
+            this.SignalMapI[signalName].Emit();
         }
 
         public State<TState, TTransition, TSignal> GetStateByName(TState stateName)
         {
-            return this.StatesI[stateName];
+            return this.StateMapI[stateName];
         }
 
         public Transition<TState, TTransition, TSignal> GetTransitionByName(TTransition transitionName)
         {
-            return this.TransitionsI[transitionName];
+            return this.TransitionMapI[transitionName];
         }
 
         public Signal<TState, TTransition, TSignal> GetSignalByName(TSignal signalName)
         {
-            return this.SignalsI[signalName];
+            return this.SignalMapI[signalName];
         }
 
         public List<TState> GetAllActiveStateNames()
         {
-            return this.StatesI.Values.Where(s => s.IsCurrentState).Select(s => s.Name).ToList();
+            return this.StateMapI.Values.Where(s => s.IsCurrentState).Select(s => s.Name).ToList();
         }
 
         public List<string> GetAllActiveStateNamesAsString()
         {
-            return this.StatesI.Values.Where(s => s.IsCurrentState).Select(s => s.Name.ToString()).ToList();
+            return this.StateMapI.Values.Where(s => s.IsCurrentState).Select(s => s.Name.ToString()).ToList();
         }
 
         public List<State<TState, TTransition, TSignal>> GetAllActiveStates()
         {
-            return this.StatesI.Values.Where(s => s.IsCurrentState).ToList();
+            return this.StateMapI.Values.Where(s => s.IsCurrentState).ToList();
         }
 
         List<IState> IStateMachine.GetAllActiveStates()
         {
-            return this.StatesI.Values.Where(s => s.IsCurrentState).ToList<IState>();
+            return this.StateMapI.Values.Where(s => s.IsCurrentState).ToList<IState>();
         }
 
         internal void FireOnStateChanged(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
