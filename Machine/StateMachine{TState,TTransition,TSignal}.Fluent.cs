@@ -83,9 +83,9 @@ namespace StateMachineFramework
 
         public StateMachine<TState, TTransition, TSignal> State(
             TState innerStateName, TState stateName,
-            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
+            out State<TState, TTransition, TSignal> innerState)
         {
-            innerState = CreateState(innerStateName, stateName, orthogonalIndex);
+            innerState = CreateState(innerStateName, stateName, 0);
             return this;
         }
 
@@ -112,9 +112,9 @@ namespace StateMachineFramework
 
         public StateMachine<TState, TTransition, TSignal> State(
             TState innerStateName, State<TState, TTransition, TSignal> state,
-            out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
+            out State<TState, TTransition, TSignal> innerState)
         {
-            innerState = CreateState(innerStateName, state, orthogonalIndex);
+            innerState = CreateState(innerStateName, state, 0);
             return this;
         }
 
