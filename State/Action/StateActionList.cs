@@ -18,6 +18,14 @@ namespace StateMachineFramework
             }
         }
 
+        internal void Resume()
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                this[i].Resume();
+            }
+        }
+
         internal void LateEnter()
         {
             for (var i = 0; i < this.Count; i++)

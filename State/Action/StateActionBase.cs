@@ -27,6 +27,11 @@
             OnEnter();
         }
 
+        public void Resume()
+        {
+            OnResume();
+        }
+
         public void LateEnter()
         {
             OnLateEnter();
@@ -62,6 +67,8 @@
         protected virtual void OnInitialize() { }
 
         protected virtual void OnEnter() { }
+
+        protected virtual void OnResume() { }
 
         protected virtual void OnLateEnter() { }
 
