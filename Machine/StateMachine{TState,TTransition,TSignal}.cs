@@ -555,6 +555,7 @@ namespace StateMachineFramework
                 this.Initialized = true;
                 this.CurrentStateI = this.InitialStateI;
                 this.CurrentStateI.Enter();
+                this.CurrentStateI.LateEnter();
             }
         }
 
@@ -677,7 +678,7 @@ namespace StateMachineFramework
 
             if (!transition.Start())
             {
-                this.CurrentStateI.Enter();
+                this.CurrentStateI.Resume();
                 transition.Terminate();
                 return;
             }

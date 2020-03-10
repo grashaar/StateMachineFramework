@@ -154,6 +154,11 @@ namespace StateMachineFramework
             }
         }
 
+        internal void Resume()
+        {
+            this.actions.Resume();
+        }
+
         internal void LateEnter()
         {
             this.actions.LateEnter();

@@ -56,6 +56,18 @@ namespace StateMachineFramework
             return this;
         }
 
+        public OrthogonalState<TState, TTransition, TSignal> OnResume(Action<IStateAction> action)
+        {
+            this.State.OnResume(action);
+            return this;
+        }
+
+        public OrthogonalState<TState, TTransition, TSignal> OnResume(string name, Action<IStateAction> action)
+        {
+            this.State.OnResume(name, action);
+            return this;
+        }
+
         public OrthogonalState<TState, TTransition, TSignal> OnLateEnter(Action<IStateAction> action)
         {
             this.State.OnLateEnter(action);
