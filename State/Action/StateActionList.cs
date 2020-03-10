@@ -30,7 +30,7 @@ namespace StateMachineFramework
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i].Enter();
+                this[i].LateEnter();
             }
         }
 
