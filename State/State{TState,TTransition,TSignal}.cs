@@ -154,6 +154,11 @@ namespace StateMachineFramework
             }
         }
 
+        internal void LateEnter()
+        {
+            this.actions.LateEnter();
+        }
+
         internal void Exit()
         {
             this.IsCurrentState = false;

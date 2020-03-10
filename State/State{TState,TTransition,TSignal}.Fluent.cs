@@ -38,6 +38,18 @@ namespace StateMachineFramework
             return this;
         }
 
+        public State<TState, TTransition, TSignal> OnLateEnter(Action<IStateAction> action)
+            => OnLateEnter(null, action);
+
+        public State<TState, TTransition, TSignal> OnLateEnter(string name, Action<IStateAction> action)
+        {
+            if (action == null)
+                return this;
+
+            AddAction(new StateActionLateEnter(name, action));
+            return this;
+        }
+
         public State<TState, TTransition, TSignal> OnExit(Action<IStateAction> action)
             => OnExit(null, action);
 

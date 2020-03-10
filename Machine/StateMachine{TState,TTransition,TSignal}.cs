@@ -696,6 +696,8 @@ namespace StateMachineFramework
 
             transition.Finish();
             this.CurrentTransitionI = null;
+
+            this.CurrentStateI.LateEnter();
         }
     }
 }
