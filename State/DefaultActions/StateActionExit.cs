@@ -19,13 +19,5 @@ namespace StateMachineFramework
         {
             this.action(this);
         }
-
-        protected override void OnInitialize() { }
-
-        protected override void OnEnter() { }
-
-        protected override void OnTerminate() { }
-
-        protected override void OnUpdate() { }
     }
 }

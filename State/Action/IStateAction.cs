@@ -8,6 +8,8 @@
 
         void Enter();
 
+        void LateEnter();
+
         void Exit();
 
         void Update();
