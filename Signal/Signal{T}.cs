@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
-    public abstract class Signal<T> : ISignal<T>
+    public abstract class Signal<T> : ISignal<T>, IEquatable<Signal<T>>
     {
         public T Name { get; }
 
@@ -31,6 +32,18 @@ namespace StateMachineFramework
         {
             this.Name = name;
         }
+
+        public override bool Equals(object obj)
+            => obj is Signal<T> other ? Equals(this.Name, other.Name) : false;
+
+        public bool Equals(Signal<T> other)
+            => other == null ? false : Equals(this.Name, other.Name);
+
+        public bool Equals(T other)
+            => other == null ? false : Equals(this.Name, other);
+
+        public override int GetHashCode()
+            => this.Name.GetHashCode();
 
         public abstract bool AddAction(ISignalAction action);
 
