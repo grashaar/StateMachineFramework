@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace StateMachineFramework
 {
-    public abstract class State<T> : IState<T>
+    public abstract class State<T> : IState<T>, IEquatable<State<T>>, IEquatable<T>
     {
         public T Name { get; }
 
@@ -27,8 +28,23 @@ namespace StateMachineFramework
 
         protected State(T name)
         {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
             this.Name = name;
         }
+
+        public override bool Equals(object obj)
+            => obj is State<T> other ? Equals(this.Name, other.Name) : false;
+
+        public bool Equals(State<T> other)
+            => other == null ? false : Equals(this.Name, other.Name);
+
+        public bool Equals(T other)
+            => other == null ? false : Equals(this.Name, other);
+
+        public override int GetHashCode()
+            => this.Name.GetHashCode();
 
         public abstract bool AddAction(IStateAction action);
 
