@@ -626,9 +626,9 @@ namespace StateMachineFramework
             return this.StateMapI.Values.Where(s => s.IsCurrentState).ToList<IState>();
         }
 
-        internal void FireOnStateChanged(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
+        internal void FireOnStateChanged(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current)
         {
-            this.actions.StateChange(priorState, formerState);
+            this.actions.StateChange(former, current);
         }
 
         internal void ProcessSignal(Signal<TState, TTransition, TSignal> signal)

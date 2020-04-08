@@ -22,6 +22,6 @@ namespace StateMachineFramework
 
         protected override void OnInitialize() { }
 
-        protected override void OnStateChange(IState priorState, IState formerState) { }
+        protected override void OnStateChange(IState former, IState current) { }
     }
 }

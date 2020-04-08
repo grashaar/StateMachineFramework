@@ -20,7 +20,7 @@ namespace StateMachineFramework
             this.action(this);
         }
 
-        protected override void OnStateChange(IState priorState, IState formerState) { }
+        protected override void OnStateChange(IState former, IState current) { }
 
         protected override void OnTerminate() { }
     }

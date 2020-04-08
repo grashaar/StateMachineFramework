@@ -6,13 +6,13 @@
 
         public StateMachineActionBase(string name) : base(name) { }
 
-        public void StateChange(IState<T> priorState, IState<T> formerState)
+        public void StateChange(IState<T> former, IState<T> current)
         {
-            OnStateChange(priorState, formerState);
+            OnStateChange(former, current);
         }
 
-        protected virtual void OnStateChange(IState<T> priorState, IState<T> formerState) { }
+        protected virtual void OnStateChange(IState<T> former, IState<T> current) { }
 
-        protected sealed override void OnStateChange(IState priorState, IState formerState) { }
+        protected sealed override void OnStateChange(IState former, IState current) { }
     }
 }

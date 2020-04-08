@@ -24,9 +24,9 @@
             OnInitialize();
         }
 
-        public void StateChange(IState priorState, IState formerState)
+        public void StateChange(IState former, IState current)
         {
-            OnStateChange(priorState, formerState);
+            OnStateChange(former, current);
         }
 
         public void Terminate()
@@ -36,7 +36,7 @@
 
         protected virtual void OnInitialize() { }
 
-        protected virtual void OnStateChange(IState priorState, IState formerState) { }
+        protected virtual void OnStateChange(IState former, IState current) { }
 
         protected virtual void OnTerminate() { }
 

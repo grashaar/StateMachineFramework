@@ -21,13 +21,13 @@
             base.SetMachine(machine);
         }
 
-        public void StateChange(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
+        public void StateChange(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current)
         {
-            OnStateChange(priorState, formerState);
+            OnStateChange(former, current);
         }
 
-        protected virtual void OnStateChange(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState) { }
+        protected virtual void OnStateChange(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current) { }
 
-        protected sealed override void OnStateChange(IState<TState> priorState, IState<TState> formerState) { }
+        protected sealed override void OnStateChange(IState<TState> former, IState<TState> current) { }
     }
 }

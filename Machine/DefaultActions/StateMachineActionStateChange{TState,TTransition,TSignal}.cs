@@ -18,9 +18,9 @@ namespace StateMachineFramework
             this.action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        protected override void OnStateChange(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
+        protected override void OnStateChange(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current)
         {
-            this.action(this, priorState, formerState);
+            this.action(this, former, current);
         }
 
         protected override void OnInitialize() { }

@@ -18,22 +18,22 @@ namespace StateMachineFramework
             }
         }
 
-        internal void StateChange<TState, TTransition, TSignal>(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState)
+        internal void StateChange<TState, TTransition, TSignal>(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current)
         {
             for (var i = 0; i < this.Count; i++)
             {
                 switch (this[i])
                 {
                     case IStateMachineAction<TState, TTransition, TSignal> actionSTS:
-                        actionSTS.StateChange(priorState, formerState);
+                        actionSTS.StateChange(former, current);
                         break;
 
                     case IStateMachineAction<TState> actionT:
-                        actionT.StateChange(priorState, formerState);
+                        actionT.StateChange(former, current);
                         break;
 
                     default:
-                        this[i].StateChange(priorState, formerState);
+                        this[i].StateChange(former, current);
                         break;
                 }
             }

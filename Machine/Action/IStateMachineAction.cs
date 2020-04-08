@@ -8,20 +8,20 @@
 
         void Initialize();
 
-        void StateChange(IState priorState, IState formerState);
+        void StateChange(IState former, IState current);
 
         void Terminate();
     }
 
     public interface IStateMachineAction<T> : IStateMachineAction
     {
-        void StateChange(IState<T> priorState, IState<T> formerState);
+        void StateChange(IState<T> former, IState<T> current);
     }
 
     public interface IStateMachineAction<TState, TTransition, TSignal> : IStateMachineAction<TState>
     {
         new StateMachine<TState, TTransition, TSignal> Machine { get; set; }
 
-        void StateChange(State<TState, TTransition, TSignal> priorState, State<TState, TTransition, TSignal> formerState);
+        void StateChange(State<TState, TTransition, TSignal> former, State<TState, TTransition, TSignal> current);
     }
 }
