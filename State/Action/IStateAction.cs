@@ -6,13 +6,13 @@
 
         IState State { get; set; }
 
-        void Enter();
+        void Enter(IState previous);
 
-        void Resume();
+        void Resume(IState next);
 
-        void LateEnter();
+        void LateEnter(IState previous);
 
-        void Exit();
+        void Exit(IState next);
 
         void Update();
 

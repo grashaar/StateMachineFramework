@@ -15,7 +15,7 @@ namespace StateMachineFramework
             this.action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        protected override void OnEnter()
+        protected override void OnEnter(IState previous)
         {
             this.action(this);
         }

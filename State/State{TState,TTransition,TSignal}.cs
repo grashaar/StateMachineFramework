@@ -143,10 +143,10 @@ namespace StateMachineFramework
             return false;
         }
 
-        internal void Enter()
+        internal void Enter(State<TState, TTransition, TSignal> previous)
         {
             this.IsCurrentState = true;
-            this.actions.Enter();
+            this.actions.Enter(previous);
 
             foreach (var orthogonal in this.OrthogonalsI.Values)
             {
@@ -154,20 +154,20 @@ namespace StateMachineFramework
             }
         }
 
-        internal void Resume()
+        internal void Resume(State<TState, TTransition, TSignal> next)
         {
-            this.actions.Resume();
+            this.actions.Resume(next);
         }
 
-        internal void LateEnter()
+        internal void LateEnter(State<TState, TTransition, TSignal> previous)
         {
-            this.actions.LateEnter();
+            this.actions.LateEnter(previous);
         }
 
-        internal void Exit()
+        internal void Exit(State<TState, TTransition, TSignal> next)
         {
             this.IsCurrentState = false;
-            this.actions.Exit();
+            this.actions.Exit(next);
 
             foreach (var orthogonal in this.OrthogonalsI.Values)
             {

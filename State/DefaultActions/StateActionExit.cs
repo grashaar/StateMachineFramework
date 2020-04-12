@@ -15,7 +15,7 @@ namespace StateMachineFramework
             this.action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
-        protected override void OnExit()
+        protected override void OnExit(IState next)
         {
             this.action(this);
         }

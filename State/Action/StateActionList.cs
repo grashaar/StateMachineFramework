@@ -10,35 +10,35 @@ namespace StateMachineFramework
 
         internal StateActionList(IEnumerable<IStateAction> collection) : base(collection) { }
 
-        internal void Enter()
+        internal void Enter(IState previous)
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i].Enter();
+                this[i].Enter(previous);
             }
         }
 
-        internal void Resume()
+        internal void Resume(IState next)
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i].Resume();
+                this[i].Resume(next);
             }
         }
 
-        internal void LateEnter()
+        internal void LateEnter(IState previous)
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i].LateEnter();
+                this[i].LateEnter(previous);
             }
         }
 
-        internal void Exit()
+        internal void Exit(IState next)
         {
             for (var i = 0; i < this.Count; i++)
             {
-                this[i].Exit();
+                this[i].Exit(next);
             }
         }
 

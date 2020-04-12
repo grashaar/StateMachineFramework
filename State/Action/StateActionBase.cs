@@ -20,26 +20,26 @@
             this.Name = name ?? "Untitled";
         }
 
-        public void Enter()
+        public void Enter(IState previous)
         {
             Initialize();
 
-            OnEnter();
+            OnEnter(previous);
         }
 
-        public void Resume()
+        public void Resume(IState next)
         {
-            OnResume();
+            OnResume(next);
         }
 
-        public void LateEnter()
+        public void LateEnter(IState previous)
         {
-            OnLateEnter();
+            OnLateEnter(previous);
         }
 
-        public void Exit()
+        public void Exit(IState next)
         {
-            OnExit();
+            OnExit(next);
         }
 
         public void Update()
@@ -66,13 +66,13 @@
 
         protected virtual void OnInitialize() { }
 
-        protected virtual void OnEnter() { }
+        protected virtual void OnEnter(IState previous) { }
 
-        protected virtual void OnResume() { }
+        protected virtual void OnResume(IState next) { }
 
-        protected virtual void OnLateEnter() { }
+        protected virtual void OnLateEnter(IState previous) { }
 
-        protected virtual void OnExit() { }
+        protected virtual void OnExit(IState next) { }
 
         protected virtual void OnUpdate() { }
 

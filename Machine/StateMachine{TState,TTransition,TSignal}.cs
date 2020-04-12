@@ -554,8 +554,8 @@ namespace StateMachineFramework
                 this.actions.Initialize();
                 this.Initialized = true;
                 this.CurrentStateI = this.InitialStateI;
-                this.CurrentStateI.Enter();
-                this.CurrentStateI.LateEnter();
+                this.CurrentStateI.Enter(default);
+                this.CurrentStateI.LateEnter(default);
             }
         }
 
@@ -674,17 +674,17 @@ namespace StateMachineFramework
             if (this.CurrentTransitionI != transition)
                 return;
 
-            this.CurrentStateI.Exit();
+            this.CurrentStateI.Exit(transition.EndStateI);
 
             if (!transition.Start())
             {
-                this.CurrentStateI.Resume();
+                this.CurrentStateI.Resume(transition.EndStateI);
                 transition.Terminate();
                 return;
             }
 
             this.CurrentStateI = transition.EndStateI;
-            this.CurrentStateI.Enter();
+            this.CurrentStateI.Enter(transition.StartStateI);
 
             FireOnStateChanged(transition.StartStateI, transition.EndStateI);
             signal.DoProcess();
@@ -698,7 +698,7 @@ namespace StateMachineFramework
             transition.Finish();
             this.CurrentTransitionI = null;
 
-            this.CurrentStateI.LateEnter();
+            this.CurrentStateI.LateEnter(transition.StartStateI);
         }
     }
 }
