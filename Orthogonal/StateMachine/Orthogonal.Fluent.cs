@@ -19,35 +19,46 @@ namespace StateMachineFramework
 
         public OrthogonalState<TState, TTransition, TSignal> BeginState(TState stateName)
         {
-            return State(this.Machine.BeginState(stateName));
+            return State(this.Machine.Begin(stateName));
         }
 
-        public OrthogonalState<TState, TTransition, TSignal> BeginState(IState state)
+        public OrthogonalState<TState, TTransition, TSignal> Begin(TState stateName)
         {
-            return State(this.Machine.BeginState(state));
+            return State(this.Machine.Begin(stateName));
         }
 
-        public OrthogonalState<TState, TTransition, TSignal> BeginState(IState<TState> state)
+        public OrthogonalState<TState, TTransition, TSignal> Begin(IState state)
         {
-            return State(this.Machine.BeginState(state));
+            return State(this.Machine.Begin(state));
+        }
+
+        public OrthogonalState<TState, TTransition, TSignal> Begin(IState<TState> state)
+        {
+            return State(this.Machine.Begin(state));
         }
 
         internal OrthogonalState<TState, TTransition, TSignal> BeginState(
             TState stateName, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return State(this.Machine.BeginState(stateName), parent);
+            return State(this.Machine.Begin(stateName), parent);
         }
 
-        internal OrthogonalState<TState, TTransition, TSignal> BeginState(
+        internal OrthogonalState<TState, TTransition, TSignal> Begin(
+            TState stateName, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return State(this.Machine.Begin(stateName), parent);
+        }
+
+        internal OrthogonalState<TState, TTransition, TSignal> Begin(
             IState state, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return State(this.Machine.BeginState(state), parent);
+            return State(this.Machine.Begin(state), parent);
         }
 
-        internal OrthogonalState<TState, TTransition, TSignal> BeginState(
+        internal OrthogonalState<TState, TTransition, TSignal> Begin(
             IState<TState> state, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return State(this.Machine.BeginState(state), parent);
+            return State(this.Machine.Begin(state), parent);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -63,14 +74,19 @@ namespace StateMachineFramework
             return Signal(this.Machine.BeginSignal(signalName));
         }
 
-        public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal signal)
+        public OrthogonalSignal<TState, TTransition, TSignal> Begin(TSignal signalName)
         {
-            return Signal(this.Machine.BeginSignal(signal));
+            return Signal(this.Machine.BeginSignal(signalName));
         }
 
-        public OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(ISignal<TSignal> signal)
+        public OrthogonalSignal<TState, TTransition, TSignal> Begin(ISignal signal)
         {
-            return Signal(this.Machine.BeginSignal(signal));
+            return Signal(this.Machine.Begin(signal));
+        }
+
+        public OrthogonalSignal<TState, TTransition, TSignal> Begin(ISignal<TSignal> signal)
+        {
+            return Signal(this.Machine.Begin(signal));
         }
 
         internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(
@@ -79,16 +95,22 @@ namespace StateMachineFramework
             return Signal(this.Machine.BeginSignal(signalName), parent);
         }
 
-        internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(
-            ISignal signal, in OrthogonalState<TState, TTransition, TSignal> parent)
+        internal OrthogonalSignal<TState, TTransition, TSignal> Begin(
+            TSignal signalName, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return Signal(this.Machine.BeginSignal(signal), parent);
+            return Signal(this.Machine.BeginSignal(signalName), parent);
         }
 
-        internal OrthogonalSignal<TState, TTransition, TSignal> BeginSignal(
+        internal OrthogonalSignal<TState, TTransition, TSignal> Begin(
+            ISignal signal, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Signal(this.Machine.Begin(signal), parent);
+        }
+
+        internal OrthogonalSignal<TState, TTransition, TSignal> Begin(
             ISignal<TSignal> signal, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return Signal(this.Machine.BeginSignal(signal), parent);
+            return Signal(this.Machine.Begin(signal), parent);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -104,14 +126,19 @@ namespace StateMachineFramework
             return Transition(this.Machine.BeginTransition(transitionName));
         }
 
-        public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition transition)
+        public OrthogonalTransition<TState, TTransition, TSignal> Begin(TTransition transitionName)
         {
-            return Transition(this.Machine.BeginTransition(transition));
+            return Transition(this.Machine.BeginTransition(transitionName));
         }
 
-        public OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition)
+        public OrthogonalTransition<TState, TTransition, TSignal> Begin(ITransition transition)
         {
-            return Transition(this.Machine.BeginTransition(transition));
+            return Transition(this.Machine.Begin(transition));
+        }
+
+        public OrthogonalTransition<TState, TTransition, TSignal> Begin(ITransition<TTransition> transition)
+        {
+            return Transition(this.Machine.Begin(transition));
         }
 
         internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(
@@ -120,187 +147,227 @@ namespace StateMachineFramework
             return Transition(this.Machine.BeginTransition(transitionName), parent);
         }
 
-        internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(
+        internal OrthogonalTransition<TState, TTransition, TSignal> Begin(
+            TTransition transitionName, in OrthogonalState<TState, TTransition, TSignal> parent)
+        {
+            return Transition(this.Machine.BeginTransition(transitionName), parent);
+        }
+
+        internal OrthogonalTransition<TState, TTransition, TSignal> Begin(
             ITransition transition, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return Transition(this.Machine.BeginTransition(transition), parent);
+            return Transition(this.Machine.Begin(transition), parent);
         }
 
-        internal OrthogonalTransition<TState, TTransition, TSignal> BeginTransition(
+        internal OrthogonalTransition<TState, TTransition, TSignal> Begin(
             ITransition<TTransition> transition, in OrthogonalState<TState, TTransition, TSignal> parent)
         {
-            return Transition(this.Machine.BeginTransition(transition), parent);
+            return Transition(this.Machine.Begin(transition), parent);
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState stateName, out State<TState, TTransition, TSignal> state)
         {
-            this.Machine.State(stateName, out state);
+            this.Machine.Create(stateName, out state);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> CreateState(
             TState stateName, Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(stateName, callback);
+            this.Machine.CreateState(stateName, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TState stateName, Action<State<TState, TTransition, TSignal>> callback = null)
+        {
+            this.Machine.Create(stateName, callback);
+            return this;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState stateName, out State<TState, TTransition, TSignal> state,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(stateName, out state, callback);
+            this.Machine.Create(stateName, out state, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState innerStateName, TState stateName,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
         {
-            this.Machine.State(innerStateName, stateName, out innerState, orthogonalIndex);
+            this.Machine.Create(innerStateName, stateName, out innerState, orthogonalIndex);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> CreateState(
             TState innerStateName, TState stateName, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(innerStateName, stateName, orthogonalIndex, callback);
+            this.Machine.CreateState(innerStateName, stateName, orthogonalIndex, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TState innerStateName, TState stateName, int orthogonalIndex = 0,
+            Action<State<TState, TTransition, TSignal>> callback = null)
+        {
+            this.Machine.Create(innerStateName, stateName, orthogonalIndex, callback);
+            return this;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState innerStateName, TState stateName,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(innerStateName, stateName, out innerState, orthogonalIndex, callback);
+            this.Machine.Create(innerStateName, stateName, out innerState, orthogonalIndex, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0)
         {
-            this.Machine.State(innerStateName, state, out innerState, orthogonalIndex);
+            this.Machine.Create(innerStateName, state, out innerState, orthogonalIndex);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(innerStateName, state, orthogonalIndex, callback);
+            this.Machine.Create(innerStateName, state, orthogonalIndex, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> State(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.State(innerStateName, state, out innerState, orthogonalIndex, callback);
+            this.Machine.Create(innerStateName, state, out innerState, orthogonalIndex, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TTransition transitionName, TState startStateName, TState endStateName,
             out Transition<TState, TTransition, TSignal> transition)
         {
-            this.Machine.Transition(transitionName, startStateName, endStateName, out transition);
+            this.Machine.Create(transitionName, startStateName, endStateName, out transition);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> CreateTransition(
             TTransition transitionName, TState startStateName, TState endStateName,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Transition(transitionName, startStateName, endStateName, callback);
+            this.Machine.CreateTransition(transitionName, startStateName, endStateName, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TTransition transitionName, TState startStateName, TState endStateName,
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
+        {
+            this.Machine.Create(transitionName, startStateName, endStateName, callback);
+            return this;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TTransition transitionName, TState startStateName, TState endStateName,
             out Transition<TState, TTransition, TSignal> transition,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Transition(transitionName, startStateName, endStateName, out transition, callback);
+            this.Machine.Create(transitionName, startStateName, endStateName, out transition, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState,
             out Transition<TState, TTransition, TSignal> transition)
         {
-            this.Machine.Transition(transitionName, startState, endState, out transition);
+            this.Machine.Create(transitionName, startState, endState, out transition);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Transition(transitionName, startState, endState, callback);
+            this.Machine.Create(transitionName, startState, endState, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Transition(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState,
             out Transition<TState, TTransition, TSignal> transition,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Transition(transitionName, startState, endState, out transition, callback);
+            this.Machine.Create(transitionName, startState, endState, out transition, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
-            TSignal signalName, TTransition transitionName, out Signal<TState, TTransition, TSignal> signal)
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TSignal signalName, TTransition transitionName,
+            out Signal<TState, TTransition, TSignal> signal)
         {
-            this.Machine.Signal(signalName, transitionName, out signal);
+            this.Machine.Create(signalName, transitionName, out signal);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
-            TSignal signalName, TTransition transitionName, Action<Signal<TState, TTransition, TSignal>> callback)
+        public Orthogonal<TState, TTransition, TSignal> CreateSignal(
+            TSignal signalName, TTransition transitionName,
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Signal(signalName, transitionName, callback);
+            this.Machine.CreateSignal(signalName, transitionName, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
-            TSignal signalName, TTransition transitionName, out Signal<TState, TTransition, TSignal> signal,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TSignal signalName, TTransition transitionName,
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Signal(signalName, transitionName, out signal, callback);
+            this.Machine.Create(signalName, transitionName, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
+        public Orthogonal<TState, TTransition, TSignal> Create(
+            TSignal signalName, TTransition transitionName,
+            out Signal<TState, TTransition, TSignal> signal,
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
+        {
+            this.Machine.Create(signalName, transitionName, out signal, callback);
+            return this;
+        }
+
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
             out Signal<TState, TTransition, TSignal> signal)
         {
-            this.Machine.Signal(signalName, transition, out signal);
+            this.Machine.Create(signalName, transition, out signal);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Signal(signalName, transition, callback);
+            this.Machine.Create(signalName, transition, callback);
             return this;
         }
 
-        public Orthogonal<TState, TTransition, TSignal> Signal(
+        public Orthogonal<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
             out Signal<TState, TTransition, TSignal> signal,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
-            this.Machine.Signal(signalName, transition, out signal, callback);
+            this.Machine.Create(signalName, transition, out signal, callback);
             return this;
         }
 

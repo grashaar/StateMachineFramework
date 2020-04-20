@@ -15,12 +15,17 @@ namespace StateMachineFramework
             return GetStateByName(stateName);
         }
 
-        public State<TState, TTransition, TSignal> BeginState(IState state)
+        public State<TState, TTransition, TSignal> Begin(TState stateName)
+        {
+            return GetStateByName(stateName);
+        }
+
+        public State<TState, TTransition, TSignal> Begin(IState state)
         {
             return GetStateByName((TState)state.Name);
         }
 
-        public State<TState, TTransition, TSignal> BeginState(IState<TState> state)
+        public State<TState, TTransition, TSignal> Begin(IState<TState> state)
         {
             return GetStateByName(state.Name);
         }
@@ -30,12 +35,17 @@ namespace StateMachineFramework
             return GetSignalByName(signalName);
         }
 
-        public Signal<TState, TTransition, TSignal> BeginSignal(ISignal signal)
+        public Signal<TState, TTransition, TSignal> Begin(TSignal signalName)
+        {
+            return GetSignalByName(signalName);
+        }
+
+        public Signal<TState, TTransition, TSignal> Begin(ISignal signal)
         {
             return GetSignalByName((TSignal)signal.Name);
         }
 
-        public Signal<TState, TTransition, TSignal> BeginSignal(ISignal<TSignal> signal)
+        public Signal<TState, TTransition, TSignal> Begin(ISignal<TSignal> signal)
         {
             return GetSignalByName(signal.Name);
         }
@@ -45,25 +55,31 @@ namespace StateMachineFramework
             return GetTransitionByName(transitionName);
         }
 
-        public Transition<TState, TTransition, TSignal> BeginTransition(ITransition transition)
+        public Transition<TState, TTransition, TSignal> Begin(TTransition transitionName)
+        {
+            return GetTransitionByName(transitionName);
+        }
+
+        public Transition<TState, TTransition, TSignal> Begin(ITransition transition)
         {
             return GetTransitionByName((TTransition)transition.Name);
         }
 
-        public Transition<TState, TTransition, TSignal> BeginTransition(ITransition<TTransition> transition)
+        public Transition<TState, TTransition, TSignal> Begin(ITransition<TTransition> transition)
         {
             return GetTransitionByName(transition.Name);
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState stateName, out State<TState, TTransition, TSignal> state)
         {
             state = CreateState(stateName);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
-            TState stateName, Action<State<TState, TTransition, TSignal>> callback = null)
+        public StateMachine<TState, TTransition, TSignal> CreateState(
+            TState stateName,
+            Action<State<TState, TTransition, TSignal>> callback = null)
         {
             var state = CreateState(stateName);
             callback?.Invoke(state);
@@ -71,8 +87,19 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
-            TState stateName, out State<TState, TTransition, TSignal> state,
+        public StateMachine<TState, TTransition, TSignal> Create(
+            TState stateName,
+            Action<State<TState, TTransition, TSignal>> callback = null)
+        {
+            var state = CreateState(stateName);
+            callback?.Invoke(state);
+
+            return this;
+        }
+
+        public StateMachine<TState, TTransition, TSignal> Create(
+            TState stateName,
+            out State<TState, TTransition, TSignal> state,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
             state = CreateState(stateName);
@@ -81,7 +108,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState innerStateName, TState stateName,
             out State<TState, TTransition, TSignal> innerState)
         {
@@ -89,7 +116,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> CreateState(
             TState innerStateName, TState stateName, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
@@ -99,7 +126,17 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
+            TState innerStateName, TState stateName, int orthogonalIndex = 0,
+            Action<State<TState, TTransition, TSignal>> callback = null)
+        {
+            var innerState = CreateState(innerStateName, stateName, orthogonalIndex);
+            callback?.Invoke(innerState);
+
+            return this;
+        }
+
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState innerStateName, TState stateName,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
@@ -110,7 +147,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state,
             out State<TState, TTransition, TSignal> innerState)
         {
@@ -118,7 +155,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
         {
@@ -128,7 +165,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> State(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TState innerStateName, State<TState, TTransition, TSignal> state,
             out State<TState, TTransition, TSignal> innerState, int orthogonalIndex = 0,
             Action<State<TState, TTransition, TSignal>> callback = null)
@@ -139,7 +176,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TTransition transitionName, TState startStateName, TState endStateName,
             out Transition<TState, TTransition, TSignal> transition)
         {
@@ -147,9 +184,9 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> CreateTransition(
             TTransition transitionName, TState startStateName, TState endStateName,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
             var transition = CreateTransition(transitionName, startStateName, endStateName);
             callback?.Invoke(transition);
@@ -157,10 +194,20 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> Create(
+            TTransition transitionName, TState startStateName, TState endStateName,
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
+        {
+            var transition = CreateTransition(transitionName, startStateName, endStateName);
+            callback?.Invoke(transition);
+
+            return this;
+        }
+
+        public StateMachine<TState, TTransition, TSignal> Create(
             TTransition transitionName, TState startStateName, TState endStateName,
             out Transition<TState, TTransition, TSignal> transition,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
             transition = CreateTransition(transitionName, startStateName, endStateName);
             callback?.Invoke(transition);
@@ -168,7 +215,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState,
             out Transition<TState, TTransition, TSignal> transition)
@@ -177,10 +224,10 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
             var transition = CreateTransition(transitionName, startState, endState);
             callback?.Invoke(transition);
@@ -188,10 +235,10 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Transition(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TTransition transitionName, State<TState, TTransition, TSignal> startState,
             State<TState, TTransition, TSignal> endState, out Transition<TState, TTransition, TSignal> transition,
-            Action<Transition<TState, TTransition, TSignal>> callback)
+            Action<Transition<TState, TTransition, TSignal>> callback = null)
         {
             transition = CreateTransition(transitionName, startState, endState);
             callback?.Invoke(transition);
@@ -199,15 +246,16 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TSignal signalName, TTransition transitionName, out Signal<TState, TTransition, TSignal> signal)
         {
             ConnectSignal(signalName, transitionName, out signal);
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
-            TSignal signalName, TTransition transitionName, Action<Signal<TState, TTransition, TSignal>> callback)
+        public StateMachine<TState, TTransition, TSignal> CreateSignal(
+            TSignal signalName, TTransition transitionName,
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
             ConnectSignal(signalName, transitionName, out Signal<TState, TTransition, TSignal> signal);
             callback?.Invoke(signal);
@@ -215,10 +263,20 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
+        public StateMachine<TState, TTransition, TSignal> Create(
+            TSignal signalName, TTransition transitionName,
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
+        {
+            ConnectSignal(signalName, transitionName, out Signal<TState, TTransition, TSignal> signal);
+            callback?.Invoke(signal);
+
+            return this;
+        }
+
+        public StateMachine<TState, TTransition, TSignal> Create(
             TSignal signalName, TTransition transitionName,
             out Signal<TState, TTransition, TSignal> signal,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
             ConnectSignal(signalName, transitionName, out signal);
             callback?.Invoke(signal);
@@ -226,7 +284,7 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
             out Signal<TState, TTransition, TSignal> signal)
         {
@@ -234,9 +292,9 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
             ConnectSignal(signalName, transition, out Signal<TState, TTransition, TSignal> signal);
             callback?.Invoke(signal);
@@ -244,10 +302,10 @@ namespace StateMachineFramework
             return this;
         }
 
-        public StateMachine<TState, TTransition, TSignal> Signal(
+        public StateMachine<TState, TTransition, TSignal> Create(
             TSignal signalName, Transition<TState, TTransition, TSignal> transition,
             out Signal<TState, TTransition, TSignal> signal,
-            Action<Signal<TState, TTransition, TSignal>> callback)
+            Action<Signal<TState, TTransition, TSignal>> callback = null)
         {
             ConnectSignal(signalName, transition, out signal);
             callback?.Invoke(signal);
